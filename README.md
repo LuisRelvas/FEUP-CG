@@ -3,8 +3,8 @@
 ## Group T0xG0y
 | Name             | Number    | E-Mail             |
 | ---------------- | --------- | ------------------ |
-| John Doe         | 201901010 | ...                |
-| Jane Doe         | 201901011 | ...                |
+| Andre Pinto      | 202108856 | up202108856@up.pt  |
+| Luis Relvas      | 202108661 | up202108661@up.pt  |
 
 ----
 
