@@ -1,6 +1,6 @@
 # CG 2023/2024
 
-## Group T0xG0y
+## Group T01G02
 | Name             | Number    | E-Mail             |
 | ---------------- | --------- | ------------------ |
 | Andre Pinto      | 202108856 | up202108856@up.pt  |
