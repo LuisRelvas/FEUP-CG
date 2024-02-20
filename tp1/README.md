@@ -9,7 +9,6 @@
 - No exercicio 2, considerando que já tinhamos concluido com sucesso o myTriangle.js, não tivemos qualquer dificuldade em representar os dois triangulos com as medidas pretendidas.
 
 
-CG-t<turma>g<grupo>-tp1-n.png
 ![Screenshot 1.1](screenshots/CG-t01g02-tp1-1.png)
 ![Screenshot 1.2](screenshots/CG-t01g02-tp1-2.png)
 ![Screenshot 1.3](screenshots/CG-t01g02-tp1-3.png)
