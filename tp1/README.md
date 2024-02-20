@@ -1,6 +1,6 @@
 # CG 2023/2024
 
-## Group T0xG0y
+## Group T01G02
 
 ## TP 1 Notes
 
@@ -8,7 +8,9 @@
 
 - No exercicio 2, considerando que já tinhamos concluido com sucesso o myTriangle.js, não tivemos qualquer dificuldade em representar os dois triangulos com as medidas pretendidas.
 
-![Screenshot 1.1](screenshots/cg-TP01-tp1-1_1.png)
-![Screenshot 1.2](screenshots/cg-TP01-tp1-1_2.png)
-![Screenshot 1.3](screenshots/cg-TP01-tp1-1_3.png)
-![Screenshot 1.4](screenshots/cg-TP01-tp1-1_4.png)
+
+CG-t<turma>g<grupo>-tp1-n.png
+![Screenshot 1.1](screenshots/CG-t01g02-tp1-1.png)
+![Screenshot 1.2](screenshots/CG-t01g02-tp1-2.png)
+![Screenshot 1.3](screenshots/CG-t01g02-tp1-3.png)
+![Screenshot 1.4](screenshots/CG-t01g02-tp1-4.png)
