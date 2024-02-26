@@ -125,6 +125,7 @@ export class MyScene extends CGFscene {
     this.tangram.display();
 
     //this.base.display();
+    
     this.unitCUbeQuad.display();
     
 
