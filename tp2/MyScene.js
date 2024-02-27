@@ -6,6 +6,7 @@ import { MyTriangle } from "./MyTriangle.js";
 import { MyTriangleBig } from "./MyTriangleBig.js";
 import { MyTriangleSmall } from "./MyTriangleSmall.js";
 import { MyBase } from "./MyBase.js";
+import { MyUnitCubeQuad } from "./MyUnitCubeQuad.js";
 
 
 
@@ -40,6 +41,7 @@ export class MyScene extends CGFscene {
     this.myTriangleBig = new MyTriangleBig(this);
     this.tangram = new MyTangram(this);
     this.base = new MyBase(this);
+    this.quadBase = new MyUnitCubeQuad(this);
    
     
 
@@ -122,9 +124,10 @@ export class MyScene extends CGFscene {
     // this.myTriangleBig.display();
 
     this.tangram.display();
-
-    this.base.display();
     
+    //this.base.display();
+    
+    this.quadBase.display();
 
     // ---- END Primitive drawing section
   }
