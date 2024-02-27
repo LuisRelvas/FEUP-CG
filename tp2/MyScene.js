@@ -5,7 +5,7 @@ import { MyTangram } from "./MyTangram.js";
 import { MyTriangle } from "./MyTriangle.js";
 import { MyTriangleBig } from "./MyTriangleBig.js";
 import { MyTriangleSmall } from "./MyTriangleSmall.js";
-import { MyBase } from "./MyBase.js";
+
 
 
 /**
@@ -38,7 +38,7 @@ export class MyScene extends CGFscene {
     this.myTriangleSmall = new MyTriangleSmall(this);
     this.myTriangleBig = new MyTriangleBig(this);
     this.tangram = new MyTangram(this);
-    this.base = new MyBase(this);
+   
     
 
     //Objects connected to MyInterface
@@ -120,7 +120,7 @@ export class MyScene extends CGFscene {
     // this.myTriangleBig.display();
 
     this.tangram.display();
-    this.base.display();
+    
     
 
     // ---- END Primitive drawing section
