@@ -12,6 +12,54 @@ export class MyCilinder extends CGFobject {
         this.initBuffers();
     }
 
+
+    initBuffers(){
+
+        this.vertices = [];
+        this.indices = [];
+        this.normals = [];
+
+        let index = 0;
+        let increment = 2 * Math.PI / this.slices;
+        for (let i = 0 ; i < this.slices ; i++) {
+
+            let x1 = Math.cos(i*increment);
+            let y1 = Math.sin(i*increment);
+            let x2 = Math.cos((i+1)*increment);
+            let y2 = Math.sin((i+1)*increment);
+            
+            let incrementZ = 1 / this.stacks
+            for (let j = 0 ; j < this.stacks ; j++) {
+
+                let angle = 2 * Math.PI * i / this.slices;
+                let x = Math.cos(angle);
+                let y = Math.sin(angle);
+
+                this.vertices.push(x1, y1, incrementZ * j); 
+                this.vertices.push(x2, y2, incrementZ * j);
+                this.vertices.push(x1, y1, incrementZ * (j + 1)); 
+                this.vertices.push(x2, y2, incrementZ * (j + 1));
+
+                this.indices.push(index+2, index, index+1);
+                this.indices.push(index+1, index+3, index+2);
+
+                this.normals.push(x, y, 0); 
+                this.normals.push(0, 0, 0);
+                this.normals.push(x, y, 0);
+                this.normals.push(0, 0, 0);
+                
+                index+=4;
+            }
+        }
+		this.primitiveType = this.scene.gl.TRIANGLES;
+        this.initGLBuffers();
+
+        
+    }
+}
+/*
+
+    
     initBuffers() {
 
         this.vertices = [];
@@ -70,3 +118,4 @@ export class MyCilinder extends CGFobject {
     updateBuffers(complexity) {
     }
 }
+*/

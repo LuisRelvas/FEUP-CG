@@ -42,15 +42,15 @@ export class MyScene extends CGFscene {
         this.myUnitCube = new MyUnitCube(this);
         this.myTangram = new MyTangram(this);
         this.myDiamond = new MyDiamond(this);
-        this.myPrism = new MyPrism(this, 6,20);
-        this.myCylinder = new MyCilinder(this, 8,2);
+        this.myPrism = new MyPrism(this,8,20);
+        this.myCylinder = new MyCilinder(this, 8,20);
         
         this.objects = [this.myPrism, this.pyramid, this.cone, this.plane, this.myUnitCube, this.myTangram, this.myCylinder];
         // Labels and ID's for object selection on MyInterface
         this.objectIDs = { 'Prism': 0 , 'Pyramid': 1, 'Cone': 2, 'Plane': 3, 'myUnitCube': 4, 'Tangram': 5, 'Cylinder' :6};
 
         //Other variables connected to MyInterface
-        this.selectedObject = 0;
+        this.selectedObject = 6;
         this.selectedMaterial = 0;
         this.displayAxis = true;
         this.displayNormals = false;
