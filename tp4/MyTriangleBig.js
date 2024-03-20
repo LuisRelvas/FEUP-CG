@@ -25,8 +25,8 @@ export class MyTriangleBig extends CGFobject {
 
 		this.texCoords = 
 		[
+			1,0,
 			0.5,0.5,
-			0,1,
 			1,1
 		]
 

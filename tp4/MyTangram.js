@@ -4,6 +4,8 @@ import { MyTriangle } from '../tp4/MyTriangle.js';
 import { MyTriangleBig } from '../tp4/MyTriangleBig.js';
 import { MyTriangleSmall } from '../tp4/MyTriangleSmall.js';
 import { MyParallelogram } from '../tp4/MyParallelogram.js';
+import { MyTriangleBig2 } from '../tp4/MyTriangleBig2.js';
+import { MyTriangleSmall2 } from '../tp4/MyTriangleSmall2.js';
 
 /**
  * MyTriangle
@@ -16,8 +18,10 @@ export class MyTangram extends CGFobject {
 		this.diamond = new MyDiamond(this.scene);	
 		this.triangle = new MyTriangle(this.scene);
 		this.triangleBig = new MyTriangleBig(this.scene);
+		this.triangleBig2 = new MyTriangleBig2(this.scene);
 		this.triangleSmall = new MyTriangleSmall(this.scene);
 		this.parallelogram = new MyParallelogram(this.scene);
+		this.triangleSmall2 = new MyTriangleSmall2(this.scene);
 		this.initialMaterials();
 
 	}
@@ -121,9 +125,9 @@ export class MyTangram extends CGFobject {
  
 	 this.scene.rotate(225 * Math.PI / 180, 0, 0, 1);
 		
-	 this.triangleBigMaterial2.apply();
+	 this.diamondNewMaterial.apply();
  
-	 this.triangleBig.display();
+	 this.triangleBig2.display();
  
 	 this.scene.popMatrix();
  
@@ -135,7 +139,7 @@ export class MyTangram extends CGFobject {
  
 	 this.scene.rotate(135 * Math.PI / 180, 0, 0, 1)
  
-	 this.parallelogramMaterial.apply();
+	 this.diamondNewMaterial.apply();
 	 
 	 this.parallelogram.display();
  
@@ -159,9 +163,9 @@ export class MyTangram extends CGFobject {
  
 	 this.scene.rotate(225 * Math.PI / 180, 0, 0, 1);
  
-	 this.triangleSmallMaterial2.apply();
+	 this.diamondNewMaterial.apply();
 	 
-	 this.triangleSmall.display();
+	 this.triangleSmall2.display();
  
 	 this.scene.popMatrix();
  
@@ -171,7 +175,7 @@ export class MyTangram extends CGFobject {
  
 	 this.scene.rotate(90 * Math.PI / 180, 0, 0, 1);
 	
-	 this.triangleSmallMaterial.apply();
+	 this.diamondNewMaterial.apply();
 	 
 	 this.triangleSmall.display();
  
