@@ -19,10 +19,11 @@ varying vec4 normal;
 
 
 
+
 void main() {
 
 	
-	gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+	gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition.x +normScale*sin(timeFactor)*0.25, aVertexPosition.y, aVertexPosition.z, 1.0);
 	coords=gl_Position;
 	
 }
