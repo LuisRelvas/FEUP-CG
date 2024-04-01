@@ -15,4 +15,4 @@ void main() {
 	colorGray.b = color.r * 0.299 + color.g *0.587 + color.b * 0.114;
 
 	gl_FragColor = colorGray;
-}
+}   
