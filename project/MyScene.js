@@ -29,15 +29,16 @@ export class MyScene extends CGFscene {
     //Initialize scene objects
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this,30);
-    this.sphere = new MySphere(this,32, 32 , false);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
     this.scaleFactor = 1;
+    this.displaySphere = true; 
+    this.displayPanoram = false;
 
     this.enableTextures(true);
 
-    this.texture = new CGFtexture(this, "images/earth.jpg");
+    this.texture = new CGFtexture(this, "images/terrain.jpg");
     this.appearance = new CGFappearance(this);
     this.appearance.setTexture(this.texture);
     this.appearance.setTextureWrap('REPEAT', 'REPEAT');
@@ -61,7 +62,7 @@ export class MyScene extends CGFscene {
 
   initTextures()
   {
-    this.panoramTexture = new CGFtexture(this, "images/panamorama4.jpg"); 
+    this.panoramTexture = new CGFtexture(this, "images/panorama.jpg"); 
     this.panoram = new MyPanoram(this,this.panoramTexture);
     this.texture = new CGFtexture(this, "images/terrain.jpg");
     this.sphereTexture = new CGFtexture(this, "images/earth.jpg");
@@ -89,7 +90,6 @@ export class MyScene extends CGFscene {
 
     // Draw axis
     if (this.displayAxis) this.axis.display();
-
     // ---- BEGIN Primitive drawing section
 
     this.pushMatrix();
@@ -99,8 +99,19 @@ export class MyScene extends CGFscene {
     this.rotate(-Math.PI/2.0,1,0,0);
     this.plane.display();
     this.popMatrix();
-    this.sphere.display();
+    if(this.displayPanoram) {
+      this.sphere = new MySphere(this,200, 200, true,200);
+      this.panoram.display();
+    } else {
+        this.sphere = new MySphere(this,200, 200, false,10);
+    }
 
+    if(this.displaySphere){
+        this.pushMatrix();
+        this.sphereAppearance.apply();
+        this.sphere.display();
+        this.popMatrix();
+    }
     // ---- END Primitive drawing section
   }
 }
