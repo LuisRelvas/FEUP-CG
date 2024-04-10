@@ -68,10 +68,8 @@ export class MySphere extends CGFobject {
                 const topVertex = (stack + 1) * this.slices + (slice + 1) % this.slices;
 
                 // Triângulos da parte superior da esfera
-                if (stack > 0) {
-                    this.indices.push(currentVertex, nextVertex, topVertex);
-                    this.indices.push(currentVertex, topVertex, bottomVertex);
-                }
+                this.indices.push(currentVertex, nextVertex, topVertex);
+                this.indices.push(currentVertex, topVertex, bottomVertex);
             }
         }
 
