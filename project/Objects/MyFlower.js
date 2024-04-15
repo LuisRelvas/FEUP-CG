@@ -12,10 +12,10 @@ import { MyPetal } from './MyPetal.js';
 export class MyFlower extends CGFobject {
 	constructor(scene) {
 		super(scene); 
-		this.steam = new MySteam(this.scene);	
 		this.petals= [];
 		this.createReceptacle();
 		this.createPetals();
+		this.createSteam();
 		//angulo da petala tem de estar na petala e ter um getter para nao dar mierda
 		
 
@@ -25,13 +25,13 @@ export class MyFlower extends CGFobject {
 		this.numbPetals = Math.trunc(Math.random()*10)+6;
 		let random2 = Math.random();
 		let random3 = Math.random();
-		let next = 360;
+		let next = Math.random()*360+15;
 		for (let i = 0; i < this.numbPetals; i++){
 			let random = Math.random();
 			let curPetal = new MyPetal(this.scene, random*30, random, random2, random3);
-			curPetal.setAngle(random*next);
+			curPetal.setAngle(next);
 			this.petals.push(curPetal);
-			next = 360-random*next;
+			next += next;
 		}
 	}
 
@@ -43,6 +43,15 @@ export class MyFlower extends CGFobject {
 		this.radius = size;
 		this.receptacle = new MyReceptacle(this.scene, randomR, randomG, randomB, size);
 
+	}
+
+	createSteam(){
+		
+		let size = Math.random()+2;
+		let randomR = Math.random()*99;
+		let randomG = Math.random();
+		let randomB = 0;
+		this.steam = new MySteam(this.scene, randomR/255, randomG, randomB, size);	
 	}
 
 	display() {
