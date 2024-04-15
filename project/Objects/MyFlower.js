@@ -16,24 +16,53 @@ export class MyFlower extends CGFobject {
 		this.petals= [];
 		this.createReceptacle();
 		this.createPetals();
-		//angulo da petala tem de estar na petala e ter um getter para nao dar mierda
-		
-
+		//angulo da petala tem de estar na petala e ter um getter 
 	}
 
-	createPetals(){
-		this.numbPetals = Math.trunc(Math.random()*10)+6;
+	createPetals() {
+		this.numbPetals = Math.trunc(Math.random() * 10) + 6;
 		let random2 = Math.random();
 		let random3 = Math.random();
 		let next = 360;
-		for (let i = 0; i < this.numbPetals; i++){
+	
+		for (let i = 0; i < this.numbPetals; i++) {
 			let random = Math.random();
-			let curPetal = new MyPetal(this.scene, random*30, random, random2, random3);
-			curPetal.setAngle(random*next);
-			this.petals.push(curPetal);
-			next = 360-random*next;
+			let curPetal = null;
+	
+			// Collision check loop
+			let attempts = 0;
+			const maxAttempts = 10;  // Maximum number of attempts to create a petal
+			do {
+				curPetal = new MyPetal(this.scene, random * 30, random, random2, random3);
+				curPetal.setAngle(random * next);
+				attempts++;
+	
+				// Directly implement collision detection logic here
+				let collision = false;
+				for (let existingPetal of this.petals) {
+					const dx = curPetal.x - existingPetal.x;
+					const dy = curPetal.y - existingPetal.y;
+					const distance = Math.sqrt(dx * dx + dy * dy);
+	
+					if (distance < (curPetal.radius + existingPetal.radius)) {
+						collision = true;
+						break;
+					}
+				}
+	
+				if (!collision || attempts >= maxAttempts) {
+					break;
+				}
+			} while (true); 
+	
+			if (attempts < maxAttempts) {
+				this.petals.push(curPetal);
+				next = 360 - random * next;
+			}
 		}
 	}
+
+	
 
 	createReceptacle(){
 		let randomR = Math.random();
