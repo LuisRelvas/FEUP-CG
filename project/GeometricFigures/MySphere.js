@@ -8,7 +8,7 @@ export class MySphere extends CGFobject {
         this.radius = 1;
         this.initBuffers();
     }
-
+    
     initBuffers() {
         this.vertices = [];
         this.indices = [];

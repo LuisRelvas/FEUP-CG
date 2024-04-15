@@ -2,6 +2,7 @@ import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture } fr
 import { MyPlane } from "./MyPlane.js";
 import { MySphere } from "./GeometricFigures/MySphere.js";
 import { MyFlower } from "./Objects/MyFlower.js";
+import { MyPetal } from "./Objects/MyPetal.js";
 
 
 /**
@@ -31,6 +32,7 @@ export class MyScene extends CGFscene {
     this.plane = new MyPlane(this,30);
     this.sphere = new MySphere(this,32,16,2);
     this.flower =  new MyFlower(this);
+  
     
 
     //Objects connected to MyInterface
@@ -90,15 +92,17 @@ this.appearance.setTextureWrap('REPEAT', 'REPEAT');
     this.rotate(-Math.PI/2.0,1,0,0);
     this.plane.display();
     this.popMatrix();
-    this.pushMatrix(); 
-    //his.flower.display();
+    this.pushMatrix();
+    this.flower.display();
     // Apply a color for the sphere
+    /*
     this.setAmbient(1, 0, 0, 1);
     this.setDiffuse(1, 0, 0, 1);
     this.setSpecular(1,0, 0, 1);
     this.setShininess(10.0);
     this.sphere.setLineMode();
     this.sphere.display();
+    */
     this.popMatrix();
     
 
