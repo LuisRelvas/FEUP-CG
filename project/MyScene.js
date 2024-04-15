@@ -2,8 +2,8 @@ import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture } fr
 import { MyPlane } from "./MyPlane.js";
 import { MySphere } from "./GeometricFigures/MySphere.js";
 import { MyFlower } from "./Objects/MyFlower.js";
-import { MyPetal } from "./Objects/MyPetal.js";
 
+import { MyPanoram } from "./Objects/MyPanoram.js";
 
 /**
  * MyScene
@@ -18,9 +18,10 @@ export class MyScene extends CGFscene {
     
     this.initCameras();
     this.initLights();
+    this.initTextures();
 
     //Background color
-    this.gl.clearColor(0.0, 1.0, 0.0, 1.0);
+    this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
     this.gl.clearDepth(100.0);
     this.gl.enable(this.gl.DEPTH_TEST);
@@ -30,21 +31,22 @@ export class MyScene extends CGFscene {
     //Initialize scene objects
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this,30);
-    this.sphere = new MySphere(this,32,16,2);
+    this.sphere = new MySphere(this,32,16,0.1);
     this.flower =  new MyFlower(this);
   
-    
 
     //Objects connected to MyInterface
     this.displayAxis = true;
     this.scaleFactor = 1;
+    this.displaySphere = true; 
+    this.displayPanoram = false;
 
     this.enableTextures(true);
 
-this.texture = new CGFtexture(this, "images/terrain.jpg");
-this.appearance = new CGFappearance(this);
-this.appearance.setTexture(this.texture);
-this.appearance.setTextureWrap('REPEAT', 'REPEAT');
+    this.texture = new CGFtexture(this, "images/terrain.jpg");
+    this.appearance = new CGFappearance(this);
+    this.appearance.setTexture(this.texture);
+    this.appearance.setTextureWrap('REPEAT', 'REPEAT');
 
   }
   initLights() {
@@ -62,13 +64,24 @@ this.appearance.setTextureWrap('REPEAT', 'REPEAT');
       vec3.fromValues(0, 0, 0)
     );
   }
+
+  initTextures()
+  {
+    this.panoramTexture = new CGFtexture(this, "images/panorama.jpg"); 
+    this.panoram = new MyPanoram(this,this.panoramTexture);
+    this.texture = new CGFtexture(this, "images/terrain.jpg");
+    this.sphereTexture = new CGFtexture(this, "images/earth.jpg");
+    this.sphereAppearance = new CGFappearance(this);
+    this.sphereAppearance.setTexture(this.sphereTexture);
+    this.sphereAppearance.setTextureWrap('REPEAT', 'REPEAT');
+  }
+
   setDefaultAppearance() {
     this.setAmbient(0.2, 0.4, 0.8, 1.0);
     this.setDiffuse(0.2, 0.4, 0.8, 1.0);
     this.setSpecular(0.2, 0.4, 0.8, 1.0);
     this.setShininess(10.0);
   }
-
   display() {
     // ---- BEGIN Background, camera and axis setup
     // Clear image and depth buffer everytime we update the scene
@@ -82,7 +95,6 @@ this.appearance.setTextureWrap('REPEAT', 'REPEAT');
 
     // Draw axis
     if (this.displayAxis) this.axis.display();
-
     // ---- BEGIN Primitive drawing section
 
     this.pushMatrix();
@@ -92,20 +104,23 @@ this.appearance.setTextureWrap('REPEAT', 'REPEAT');
     this.rotate(-Math.PI/2.0,1,0,0);
     this.plane.display();
     this.popMatrix();
+
     this.pushMatrix();
     this.flower.display();
-    // Apply a color for the sphere
-    /*
-    this.setAmbient(1, 0, 0, 1);
-    this.setDiffuse(1, 0, 0, 1);
-    this.setSpecular(1,0, 0, 1);
-    this.setShininess(10.0);
-    this.sphere.setLineMode();
-    this.sphere.display();
-    */
-    this.popMatrix();
-    
 
+    if(this.displayPanoram) {
+      this.sphere = new MySphere(this,200, 200, true,200);
+      this.panoram.display();
+    } else {
+        this.sphere = new MySphere(this,200, 200, false,10);
+    }
+
+    if(this.displaySphere){
+        this.pushMatrix();
+        this.sphereAppearance.apply();
+        this.sphere.display();
+        this.popMatrix();
+    }
     // ---- END Primitive drawing section
   }
 }

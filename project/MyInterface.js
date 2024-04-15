@@ -23,6 +23,14 @@ export class MyInterface extends CGFinterface {
         //Slider element in GUI
         this.gui.add(this.scene, 'scaleFactor', 0.1, 5).name('Scale Factor');
 
+        //Checkbox to control the Sphere Visibility
+        this.gui.add(this.scene,'displaySphere').name('Sphere Visibility');
+
+        //Checkbox to control the Panoram Visibility
+        this.gui.add(this.scene, 'displayPanoram').name('Inside Visibility');
+
+
+
         return true;
     }
 }
