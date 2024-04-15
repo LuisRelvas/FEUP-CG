@@ -12,53 +12,26 @@ import { MyPetal } from './MyPetal.js';
 export class MyFlower extends CGFobject {
 	constructor(scene) {
 		super(scene); 
-		this.steam = new MySteam(this.scene);	
 		this.petals= [];
 		this.createReceptacle();
 		this.createPetals();
-		//angulo da petala tem de estar na petala e ter um getter 
+		this.createSteam();
+		//angulo da petala tem de estar na petala e ter um getter para nao dar mierda
+		
+
 	}
 
 	createPetals() {
 		this.numbPetals = Math.trunc(Math.random() * 10) + 6;
 		let random2 = Math.random();
 		let random3 = Math.random();
-		let next = 360;
-	
-		for (let i = 0; i < this.numbPetals; i++) {
+		let next = Math.random()*360+15;
+		for (let i = 0; i < this.numbPetals; i++){
 			let random = Math.random();
-			let curPetal = null;
-	
-			// Collision check loop
-			let attempts = 0;
-			const maxAttempts = 10;  // Maximum number of attempts to create a petal
-			do {
-				curPetal = new MyPetal(this.scene, random * 30, random, random2, random3);
-				curPetal.setAngle(random * next);
-				attempts++;
-	
-				// Directly implement collision detection logic here
-				let collision = false;
-				for (let existingPetal of this.petals) {
-					const dx = curPetal.x - existingPetal.x;
-					const dy = curPetal.y - existingPetal.y;
-					const distance = Math.sqrt(dx * dx + dy * dy);
-	
-					if (distance < (curPetal.radius + existingPetal.radius)) {
-						collision = true;
-						break;
-					}
-				}
-	
-				if (!collision || attempts >= maxAttempts) {
-					break;
-				}
-			} while (true); 
-	
-			if (attempts < maxAttempts) {
-				this.petals.push(curPetal);
-				next = 360 - random * next;
-			}
+			let curPetal = new MyPetal(this.scene, random*30, random, random2, random3);
+			curPetal.setAngle(next);
+			this.petals.push(curPetal);
+			next += next;
 		}
 	}
 
@@ -72,6 +45,15 @@ export class MyFlower extends CGFobject {
 		this.radius = size;
 		this.receptacle = new MyReceptacle(this.scene, randomR, randomG, randomB, size);
 
+	}
+
+	createSteam(){
+		
+		let size = Math.random()+2;
+		let randomR = Math.random()*99;
+		let randomG = Math.random();
+		let randomB = 0;
+		this.steam = new MySteam(this.scene, randomR/255, randomG, randomB, size);	
 	}
 
 	display() {
