@@ -10,7 +10,7 @@ export class MySphere extends CGFobject {
         this.radius = radius;
         this.initBuffers();
     }
-
+    
     initBuffers() {
         this.vertices = [];
         this.indices = [];
@@ -79,6 +79,7 @@ export class MySphere extends CGFobject {
                     this.indices.push(currentVertex, nextVertex, topVertex);
                     this.indices.push(currentVertex, topVertex, bottomVertex);
                 }
+
             }
         }
     
