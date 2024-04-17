@@ -2,6 +2,7 @@ import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture } fr
 import { MyPlane } from "./MyPlane.js";
 import { MySphere } from "./GeometricFigures/MySphere.js";
 import { MyFlower } from "./Objects/MyFlower.js";
+import { MyGarden } from "./Objects/MyGarden.js";
 
 import { MyPanoram } from "./Objects/MyPanoram.js";
 
@@ -33,6 +34,7 @@ export class MyScene extends CGFscene {
     this.plane = new MyPlane(this,30);
     this.sphere = new MySphere(this,32,16,0.1);
     this.flower =  new MyFlower(this);
+    this.garden = new MyGarden(this, 5, 5); 
   
 
     //Objects connected to MyInterface
@@ -67,7 +69,7 @@ export class MyScene extends CGFscene {
 
   initTextures()
   {
-    this.panoramTexture = new CGFtexture(this, "images/panorama.jpg"); 
+    this.panoramTexture = new CGFtexture(this, "images/panorama4.jpg"); 
     this.panoram = new MyPanoram(this,this.panoramTexture);
     this.texture = new CGFtexture(this, "images/terrain.jpg");
     this.sphereTexture = new CGFtexture(this, "images/earth.jpg");
@@ -106,7 +108,9 @@ export class MyScene extends CGFscene {
     this.popMatrix();
 
     this.pushMatrix();
-    this.flower.display();
+    this.translate(0,-100,0);
+    this.garden.display();
+    this.popMatrix();
 
     if(this.displayPanoram) {
       this.sphere = new MySphere(this,200, 200, true,200);

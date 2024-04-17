@@ -50,7 +50,6 @@ export class MySphere extends CGFobject {
                 const z = this.radius * sinAlpha * sinTheta;
     
                 // Cálculo da normal
-                // Cálculo da normal
                 const normalX = this.inside ? -x : x;
                 const normalY = this.inside ? -y : y;
                 const normalZ = this.inside ? -z : z;

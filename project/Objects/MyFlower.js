@@ -21,8 +21,13 @@ export class MyFlower extends CGFobject {
 
 	}
 
-	createPetals(){
-		this.numbPetals = Math.trunc(Math.random()*10)+6;
+	setPosition(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+	createPetals() {
+		this.numbPetals = Math.trunc(Math.random() * 10) + 6;
 		let random2 = Math.random();
 		let random3 = Math.random();
 		let next = Math.random()*360+15;
@@ -34,6 +39,8 @@ export class MyFlower extends CGFobject {
 			next += next;
 		}
 	}
+
+	
 
 	createReceptacle(){
 		let randomR = Math.random();
@@ -58,6 +65,8 @@ export class MyFlower extends CGFobject {
 	display() {
 
 		this.scene.pushMatrix();
+        this.scene.translate(this.x, 0, this.y);
+		this.scene.pushMatrix();
 		this.receptacle.display();
 		this.scene.popMatrix();
 
@@ -77,10 +86,6 @@ export class MyFlower extends CGFobject {
 			this.scene.popMatrix();
 		}	
 		
-		
-
-	 
-
 	}
 
 	enableNormalViz(){
