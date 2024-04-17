@@ -8,15 +8,33 @@ import { MyCilinder } from '../GeometricFigures/MyCilinder.js';
  * @param scene - Reference to MyScene object
  */
 export class MySteam extends CGFobject {
-	constructor(scene, r , g, b, size) {
-		super(scene); 
-		this.steam = new MyCilinder(this.scene, 16, 8, 0.1);	
+	constructor(scene, r , g, b, size, numCil) {
+		super(scene); 	
 		this.size = size;
 		this.r = r;
         this.g = g;
         this.b = b;
+		this.numCil = numCil;
+		this.cilinderSize = (this.size /this.numCil);
+		this.cilinders = [];
+		this.deviations = [];
+		this.createCilinders();
 		this.initialMaterials();
 
+	}
+
+	createCilinders(){
+		for(let i=0; i< this.numCil; i++){
+			let curCil = new MyCilinder(this.scene, 16, 8, 0.1);
+			this.cilinders.push(curCil);
+			if (i==0){
+				this.deviations.push(0);
+			}
+			else{
+				let angle = Math.random()*2.5;
+				this.deviations.push(angle);
+			}
+		}
 	}
 
 	initialMaterials() 
@@ -28,15 +46,36 @@ export class MySteam extends CGFobject {
 		this.steamMaterial.setShininess(10.0);
 	};
 
-	display() {
+	
 
-		this.scene.pushMatrix();
-		this.scene.rotate(90 * Math.PI / 180, 1, 0, 0);
-		this.scene.scale(1,1,this.size);
+	display() {
+		for(let i=0; i< this.numCil; i++){
+			this.scene.pushMatrix();
+			let curCil = this.cilinders[i];
+			this.scene.rotate(90 * Math.PI / 180, 1, 0, 0);
+			this.scene.scale(1,1,this.cilinderSize);
+			let dif = this.cilinderSize*(this.numCil-i-1)*1.7;
+			this.scene.translate(0,0,dif);
+			if(i==0){
+			}
+			else{
+				if(i%2==0){
+					let angle = this.deviations[i];
+					this.scene.rotate(angle*Math.PI/180,0,1,0);
+				}
+				else{
+					let angle = this.deviations[i];
+					this.scene.rotate(-angle*Math.PI/180,0,1,0);	
+				}
+			}
+			this.steamMaterial.apply();
+			curCil.display();
+			this.scene.popMatrix();
+
+		}
 		
-		this.steamMaterial.apply();
-		this.steam.display();
-		this.scene.popMatrix();
+		
+		
 	 
 
 	}

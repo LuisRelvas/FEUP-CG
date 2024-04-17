@@ -39,7 +39,7 @@ export class MyFlower extends CGFobject {
 		let randomR = Math.random();
 		let randomG = Math.random();
 		let randomB = Math.random();
-		let size = Math.random()*0.3+0.01;
+		let size = Math.random()*0.15+0.05;
 		this.radius = size;
 		this.receptacle = new MyReceptacle(this.scene, randomR, randomG, randomB, size);
 
@@ -51,15 +51,16 @@ export class MyFlower extends CGFobject {
 		let randomR = Math.random()*99;
 		let randomG = Math.random();
 		let randomB = 0;
-		this.steam = new MySteam(this.scene, randomR/255, randomG, randomB, size);	
+		let numCil =  Math.trunc(Math.random()*9+1);
+		this.steam = new MySteam(this.scene, randomR/255, randomG, randomB, size, numCil);	
 	}
 
 	display() {
-		
+
 		this.scene.pushMatrix();
 		this.receptacle.display();
 		this.scene.popMatrix();
-	
+
 		this.scene.pushMatrix();
 		this.steam.display();
 		this.scene.popMatrix();
@@ -67,7 +68,7 @@ export class MyFlower extends CGFobject {
 		
 		for(let j=0; j< this.numbPetals; j++){
 			this.scene.pushMatrix();
-			let curPetal = this.petals[j] 
+			let curPetal = this.petals[j];
 			let angle = curPetal.getAngle();
 			this.scene.rotate(angle*Math.PI/180,0,0,1);
 			this.scene.translate(0,0.5+this.radius,0);
@@ -76,36 +77,7 @@ export class MyFlower extends CGFobject {
 			this.scene.popMatrix();
 		}	
 		
-		/*
-		this.scene.pushMatrix();
-		this.scene.rotate(90*Math.PI/180,0,0,1);
-		this.scene.translate(0,0.61,0);
-		this.petal1.display();
-		this.scene.popMatrix();
-
-		this.scene.pushMatrix();
-		this.scene.rotate(-90*Math.PI/180,0,0,1);
-		this.scene.translate(0,0.61,0);
-		this.petal2.display();
-		this.scene.popMatrix();
-
-		this.scene.pushMatrix();
-		this.scene.rotate(45*Math.PI/180,0,0,1);
-		this.scene.translate(0,0.61,0);
-		this.petal3.display();
-		this.scene.popMatrix();
-
-		this.scene.pushMatrix();
-		this.scene.rotate(-45*Math.PI/180,0,0,1);
-		this.scene.translate(0,0.61,0);
-		this.petal4.display();
-		this.scene.popMatrix();
-	
-		this.scene.pushMatrix();
-		this.scene.translate(0,0.61,0);
-		this.petal5.display();
-		this.scene.popMatrix();
-		*/
+		
 
 	 
 
