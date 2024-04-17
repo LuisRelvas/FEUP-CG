@@ -54,22 +54,24 @@ export class MyFlower extends CGFobject {
 
 	createSteam(){
 		
-		let size = Math.random()+2;
+		let size = Math.random()*3+3;
 		let randomR = Math.random()*99;
 		let randomG = Math.random();
 		let randomB = 0;
-		let numCil =  Math.trunc(Math.random()*9+1);
+		let numCil =  Math.trunc(Math.random()*7+3);
 		this.steam = new MySteam(this.scene, randomR/255, randomG, randomB, size, numCil);	
 	}
 
 	display() {
 
+		
 		this.scene.pushMatrix();
         this.scene.translate(this.x, 0, this.y);
 		this.scene.pushMatrix();
 		this.receptacle.display();
 		this.scene.popMatrix();
-
+		
+		
 		this.scene.pushMatrix();
 		this.steam.display();
 		this.scene.popMatrix();

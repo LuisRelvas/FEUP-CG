@@ -96,4 +96,6 @@ export class MySphere extends CGFobject {
         this.primitiveType=this.scene.gl.LINES;
     }
 
+    
+
 }

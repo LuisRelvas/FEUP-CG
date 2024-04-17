@@ -17,23 +17,17 @@ export class MySteam extends CGFobject {
 		this.numCil = numCil;
 		this.cilinderSize = (this.size /this.numCil);
 		this.cilinders = [];
-		this.deviations = [];
+		this.sideSteam = new MyCilinder(this.scene, 16, 8, 0.1);
 		this.createCilinders();
 		this.initialMaterials();
 
 	}
 
 	createCilinders(){
+		this.incl = Math.random()*30-15;
 		for(let i=0; i< this.numCil; i++){
 			let curCil = new MyCilinder(this.scene, 16, 8, 0.1);
 			this.cilinders.push(curCil);
-			if (i==0){
-				this.deviations.push(0);
-			}
-			else{
-				let angle = Math.random()*2.5;
-				this.deviations.push(angle);
-			}
 		}
 	}
 
@@ -49,36 +43,44 @@ export class MySteam extends CGFobject {
 	
 
 	display() {
+		
 		for(let i=0; i< this.numCil; i++){
 			this.scene.pushMatrix();
 			let curCil = this.cilinders[i];
 			this.scene.rotate(90 * Math.PI / 180, 1, 0, 0);
 			this.scene.scale(1,1,this.cilinderSize);
-			let dif = this.cilinderSize*(this.numCil-i-1)*1.7;
+			let dif = this.cilinderSize*i;	
+			this.scene.rotate(this.incl*Math.PI/180,0,1,0);
 			this.scene.translate(0,0,dif);
-			if(i==0){
-			}
-			else{
-				if(i%2==0){
-					let angle = this.deviations[i];
-					this.scene.rotate(angle*Math.PI/180,0,1,0);
-				}
-				else{
-					let angle = this.deviations[i];
-					this.scene.rotate(-angle*Math.PI/180,0,1,0);	
-				}
-			}
 			this.steamMaterial.apply();
 			curCil.display();
 			this.scene.popMatrix();
+		
+			}
+		
+		this.scene.pushMatrix();
+		this.scene.rotate(90 * Math.PI / 180, 1, 0, 0);
+		/*
+		if(this.incl > 0){
+			this.scene.rotate(-30*Math.PI/180,0,1,0);
+			this.scene.translate(0,0,this.size/3);
+			this.scene.translate(this.size*Math.sin(30*Math.PI/180),0,0);
+		
+		}
+		else{
+			this.scene.rotate(30*Math.PI/180,0,1,0);
+			this.scene.translate(0,0,this.size/3);
+			this.scene.translate(this.size*Math.sin(-30*Math.PI/180),0,0);
+		}
 
+		this.sideSteam.display();
+		this.scene.popMatrix();
+		*/
 		}
 		
-		
-		
-	 
 
-	}
+
+	
 
 	enableNormalViz(){
         this.steam.enableNormalViz()
