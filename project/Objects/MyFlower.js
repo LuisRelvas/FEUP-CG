@@ -13,10 +13,11 @@ export class MyFlower extends CGFobject {
 	constructor(scene) {
 		super(scene); 
 		this.petals= [];
-		this.createReceptacle();
-		//this.createPetals();
-		this.createSteam();
-		//angulo da petala tem de estar na petala e ter um getter para nao dar mierda
+		let totalSize = this.createSteam();
+
+		this.createReceptacle(totalSize);
+		//layer 1
+		this.createPetals();
 		
 
 	}
@@ -28,65 +29,119 @@ export class MyFlower extends CGFobject {
 
 	createPetals() {
 		this.numbPetals = Math.trunc(Math.random() * 10) + 6;
-		let random2 = Math.random();
-		let random3 = Math.random();
-		let next = Math.random()*360+15;
-		for (let i = 0; i < this.numbPetals; i++){
-			let random = Math.random();
-			let curPetal = new MyPetal(this.scene, random*30, random, random2, random3);
-			curPetal.setAngle(next);
-			this.petals.push(curPetal);
-			next += next;
+		let angleIncrement = 360 / this.numbPetals; 
+	
+		// Create two layers of petals
+		for (let layer = 0; layer < 2; layer++) {
+			let next = Math.random() * angleIncrement; 
+			for (let i = 0; i < this.numbPetals; i++){
+				let random = Math.random();
+				let random2 = Math.random();
+				let random3 = Math.random();
+				let curPetal = new MyPetal(this.scene, random*30/(layer+1), random, random2, random3);
+				curPetal.setAngle(next);
+				this.petals.push(curPetal);
+				next += angleIncrement;
+			}
 		}
 	}
 
 	
 
-	createReceptacle(){
+	createReceptacle(totalSize){
 		let randomR = Math.random();
 		let randomG = Math.random();
 		let randomB = Math.random();
 		let size = Math.random()*0.15+0.05;
 		this.radius = size;
-		this.receptacle = new MyReceptacle(this.scene, randomR, randomG, randomB, size);
-
+		this.receptacle = new MyReceptacle(this.scene, randomR, randomG, randomB, size, totalSize);
 	}
 
 	createSteam(){
 		
 		let size = Math.random()*3+3;
+		//generate random sizes for cilinders having in mind the total size of the steam that is size: 
+		let cilindersizes = [];
+		let auxSize = size; 
+
+		// Generate 3 base sizes first
+		for(let i = 0; i < 3; i++) {
+			let curSize = Math.random()*(auxSize - 1) + 1; 
+			cilindersizes.push(curSize);
+			auxSize -= curSize;
+		}
+
+		// Generate the rest of the sizes
+		while(auxSize >= 1) {
+			let curSize = Math.random()*(auxSize - 1) + 1; 
+			cilindersizes.push(curSize);
+			auxSize -= curSize;
+		}
+
+		// Check the last value and add the remaining auxSize to it if it's less than 1
+		if(cilindersizes[cilindersizes.length - 1] < 1) {
+			cilindersizes[cilindersizes.length - 1] = 1;
+			size = cilindersizes.reduce((a, b) => a + b, 0);
+		}
 		let randomR = Math.random()*99;
 		let randomG = Math.random();
 		let randomB = 0;
 		let numCil =  Math.trunc(Math.random()*7+3);
-		this.steam = new MySteam(this.scene, randomR/255, randomG, randomB, size, numCil);	
+		this.steam = new MySteam(this.scene, randomR/255, randomG, randomB, size, cilindersizes);	
+		return size; 
 	}
-
-	display() {
-
-		
-		this.scene.pushMatrix();
-        this.scene.translate(this.x, 0, this.y);
-		this.scene.pushMatrix();
-		//this.receptacle.display();
-		this.scene.popMatrix();
-		
-		
-		this.scene.pushMatrix();
-		this.steam.display();
-		this.scene.popMatrix();
-
-		
-		for(let j=0; j< this.numbPetals; j++){
+	
+	displayPetals() 
+	{
+		for(let j=0; j< this.numbPetals * 2; j++){ 
 			this.scene.pushMatrix();
 			let curPetal = this.petals[j];
 			let angle = curPetal.getAngle();
 			this.scene.rotate(angle*Math.PI/180,0,0,1);
-			this.scene.translate(0,0.5+this.radius,0);
-		
+			this.scene.translate(0,0.5+this.radius, j >= this.numbPetals ? 0.1 : 0);
 			curPetal.display();
 			this.scene.popMatrix();
-		}	
+		}   
+	}
+
+	display() {
+		let finalPos = []; 
+		this.scene.pushMatrix();
+		this.scene.pushMatrix();
+		this.scene.rotate(-90 * Math.PI / 180, 1, 0, 0);
+
+		finalPos = this.steam.display();
+		this.scene.pushMatrix();
+		this.scene.translate(finalPos[0],0,finalPos[1]);
+		this.scene.pushMatrix();
+		this.scene.rotate(90 * Math.PI / 180, 1,0,0);
+		this.scene.pushMatrix();
+		this.scene.rotate(-finalPos[2] * Math.PI / 180, 0, 0, 1);
+		this.receptacle.display(finalPos);
+		this.scene.popMatrix();
+		this.scene.pushMatrix();
+		this.scene.scale(1,-1,-1);
+		this.scene.rotate(finalPos[2] * Math.PI / 180, 0, 0, 1); 
+		this.receptacle.display(finalPos);
+		this.scene.popMatrix();
+		this.scene.popMatrix();
+		this.scene.popMatrix();
+		this.scene.pushMatrix();
+		this.scene.pushMatrix();
+		this.scene.translate(finalPos[0], 0, finalPos[1]); 
+		this.scene.rotate(finalPos[2] * Math.PI / 180, 0, 1, 0);
+		this.displayPetals();
+		
+		this.scene.popMatrix();
+		this.scene.popMatrix();
+		this.scene.popMatrix();
+		this.scene.popMatrix();
+		this.scene.popMatrix();
+		this.scene.popMatrix();
+		
+
+		
+		
 		
 	}
 

@@ -6,6 +6,7 @@ import { MyGarden } from "./Objects/MyGarden.js";
 
 import { MyPanoram } from "./Objects/MyPanoram.js";
 import { MyCilinder } from "./GeometricFigures/MyCilinder.js";
+import { MyCone } from "./GeometricFigures/MyCone.js"; 
 
 /**
  * MyScene
@@ -36,7 +37,6 @@ export class MyScene extends CGFscene {
     this.sphere = new MySphere(this,32,16,0.1);
     this.flower =  new MyFlower(this);
     this.garden = new MyGarden(this, 5, 5); 
-    this.cilinder = new MyCilinder(this, 16, 8, 0.1);
 
 
   
@@ -109,8 +109,7 @@ export class MyScene extends CGFscene {
     this.flower.setPosition(0,0);
     this.flower.display();
     this.popMatrix();
-
-    
+        
     this.pushMatrix();
     this.appearance.apply();
     this.translate(0,-100,0);

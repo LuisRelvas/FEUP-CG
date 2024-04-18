@@ -1,5 +1,6 @@
 import {CGFappearance, CGFobject} from '../../lib/CGF.js';
 import { MySphere } from '../GeometricFigures/MySphere.js';
+import { MyCone } from '../GeometricFigures/MyCone.js'; 
 
 
 /**
@@ -8,14 +9,14 @@ import { MySphere } from '../GeometricFigures/MySphere.js';
  * @param scene - Reference to MyScene object
  */
 export class MyReceptacle extends CGFobject {
-	constructor(scene, r, g, b, size ) {
+	constructor(scene, r, g, b, size, totalSize ) {
 		super(scene); 
-		this.receptacle = new MySphere(this.scene, 32, 16, false, 2);	
+		this.receptacle = new MyCone(this.scene, 32, 16, 0.5, 0.1);	
 		this.r = r;
         this.g = g;
         this.b = b;
 		this.size = size;
-		
+		this.totalSize = totalSize; 
 		this.initialMaterials();
 
 	}
@@ -32,15 +33,13 @@ export class MyReceptacle extends CGFobject {
 	
 	};
 
-	display() {
+	display(finalPos) {
 
 	this.scene.pushMatrix();
-	this.scene.scale(this.size, this.size, this.size);
+	this.scene.scale(1, 1, 1);
 	this.receptacleMaterial.apply();
     this.receptacle.display();
     this.scene.popMatrix();
-	 
-
 	}
 
 	enableNormalViz(){
