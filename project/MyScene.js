@@ -36,6 +36,7 @@ export class MyScene extends CGFscene {
     this.sphere = new MySphere(this,32,16,0.1);
     this.flower =  new MyFlower(this);
     this.garden = new MyGarden(this, 5, 5); 
+    this.cilinder = new MyCilinder(this, 16, 8, 0.1);
 
 
   
@@ -104,9 +105,8 @@ export class MyScene extends CGFscene {
     if (this.displayAxis) this.axis.display();
     // ---- BEGIN Primitive drawing section
 
-    this.flower.setPosition(0,0);
     this.pushMatrix();
-
+    this.flower.setPosition(0,0);
     this.flower.display();
     this.popMatrix();
 
@@ -120,14 +120,11 @@ export class MyScene extends CGFscene {
     this.popMatrix();
 
     
-    this.pushMatrix();
-    this.translate(0,-100,0);
-    this.garden.display();
-    this.popMatrix();
-    
-    
-  
-    
+    // this.pushMatrix();
+    // this.garden.display();
+    // this.popMatrix();
+ 
+
     if(this.displayPanoram) {
       this.sphere = new MySphere(this,200, 200, true,200);
       this.panoram.display();

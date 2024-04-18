@@ -14,7 +14,7 @@ export class MyFlower extends CGFobject {
 		super(scene); 
 		this.petals= [];
 		this.createReceptacle();
-		this.createPetals();
+		//this.createPetals();
 		this.createSteam();
 		//angulo da petala tem de estar na petala e ter um getter para nao dar mierda
 		
@@ -68,7 +68,7 @@ export class MyFlower extends CGFobject {
 		this.scene.pushMatrix();
         this.scene.translate(this.x, 0, this.y);
 		this.scene.pushMatrix();
-		this.receptacle.display();
+		//this.receptacle.display();
 		this.scene.popMatrix();
 		
 		
