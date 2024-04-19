@@ -6,7 +6,9 @@ import { MyGarden } from "./Objects/MyGarden.js";
 
 import { MyPanoram } from "./Objects/MyPanoram.js";
 import { MyCilinder } from "./GeometricFigures/MyCilinder.js";
-import { MyCone } from "./GeometricFigures/MyCone.js"; 
+import { MyCone } from "./GeometricFigures/MyCone.js";
+import { MyRock } from "./Objects/MyRock.js"; 
+import { MyRockSet } from "./Objects/MyRockSet.js";
 
 /**
  * MyScene
@@ -36,7 +38,9 @@ export class MyScene extends CGFscene {
     this.plane = new MyPlane(this,30);
     this.sphere = new MySphere(this,32,16,0.1);
     this.flower =  new MyFlower(this);
-    this.garden = new MyGarden(this, 5, 5); 
+    this.garden = new MyGarden(this, 5, 5);
+    this.rock = new MyRock(this, 1, 32, 16); 
+    this.rockSet = new MyRockSet(this, 10, 32, 16);
 
 
   
@@ -82,6 +86,10 @@ export class MyScene extends CGFscene {
     this.sphereAppearance = new CGFappearance(this);
     this.sphereAppearance.setTexture(this.sphereTexture);
     this.sphereAppearance.setTextureWrap('REPEAT', 'REPEAT');
+    this.rockTexture = new CGFtexture(this, "images/rock.jpg");
+    this.rockAppearance = new CGFappearance(this);
+    this.rockAppearance.setTexture(this.rockTexture);
+    
   }
 
   setDefaultAppearance() {
@@ -110,12 +118,18 @@ export class MyScene extends CGFscene {
     // this.flower.display();
     // this.popMatrix();
         
+    // this.pushMatrix();
+    // this.appearance.apply();
+    // this.translate(0,-100,0);
+    // this.scale(400,400,400);
+    // this.rotate(-Math.PI/2.0,1,0,0);
+    // this.plane.display();
+    // this.popMatrix();
+
     this.pushMatrix();
-    this.appearance.apply();
-    this.translate(0,-100,0);
-    this.scale(400,400,400);
-    this.rotate(-Math.PI/2.0,1,0,0);
-    this.plane.display();
+    this.translate(0,-199,0);
+    this.rockTexture.bind();
+    this.rockSet.display();
     this.popMatrix();
 
     
