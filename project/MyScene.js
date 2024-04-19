@@ -18,9 +18,11 @@ import { MyBee } from "./Objects/MyBee.js";
 export class MyScene extends CGFscene {
   constructor() {
     super();
+    
   }
   init(application) {
     super.init(application);
+
     
     this.initCameras();
     this.initLights();
@@ -42,18 +44,16 @@ export class MyScene extends CGFscene {
     this.garden = new MyGarden(this, 5, 5);
     this.rock = new MyRock(this, 1, 32, 16); 
     this.rockSet = new MyRockSet(this, 10, 32, 16);
-    this.bee = new MyBee(this);
+    this.bee = new MyBee(this,0,0,0);
 
-
-  
-
-  
 
     //Objects connected to MyInterface
     this.displayAxis = true;
     this.scaleFactor = 1;
     this.displaySphere = true; 
     this.displayPanoram = true;
+    this.speedFactor = 1;
+    this.scaleFactor = 1; 
 
     this.enableTextures(true);
 
@@ -61,7 +61,37 @@ export class MyScene extends CGFscene {
     this.appearance = new CGFappearance(this);
     this.appearance.setTexture(this.texture);
     this.appearance.setTextureWrap('REPEAT', 'REPEAT');
+  }
 
+  
+
+  checkKeys() 
+  {
+    var text="Keys pressed: "; 
+    var keysPressed = false;
+    if (this.gui.isKeyPressed("KeyW")) {
+      text+=" W "; 
+      this.bee.x += 0.01 * this.speedFactor;
+      keysPressed = true;
+    }
+    if (this.gui.isKeyPressed("KeyA")) {
+      text+=" A ";
+      this.bee.orientation += 0.1 * this.scaleFactor; 
+      keysPressed = true;
+    }
+    if (this.gui.isKeyPressed("KeyS")) {
+      text+=" S "; 
+      this.bee.x -= 0.01 * this.speedFactor;
+      keysPressed = true;
+    }
+    if (this.gui.isKeyPressed("KeyD")) {
+      this.bee.orientation -= 0.1 * this.scaleFactor; 
+      text+=" D "; 
+      keysPressed = true;
+    }
+    if (keysPressed) {
+      console.log(text);
+    }
   }
   initLights() {
     this.lights[0].setPosition(15, 0, 5, 1);
@@ -107,6 +137,7 @@ export class MyScene extends CGFscene {
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
     // Initialize Model-View matrix as identity (no transformation
     this.updateProjectionMatrix();
+    this.update();
     this.loadIdentity();
     // Apply transformations corresponding to the camera position relative to the origin
     this.applyViewMatrix();
@@ -139,7 +170,7 @@ export class MyScene extends CGFscene {
     const currentTime = Date.now();
     this.bee.update(currentTime);
     this.bee.updateWings(currentTime);
-    this.bee.display();
+    this.bee.move();
     this.popMatrix();
 
     
@@ -163,5 +194,10 @@ export class MyScene extends CGFscene {
         this.popMatrix();
     }
     // ---- END Primitive drawing section
+  }
+  update(time) 
+  {
+    this.checkKeys();
+
   }
 }

@@ -4,15 +4,20 @@ import { MyTriangle } from '../GeometricFigures/MyTriangle.js';
 import { MyCilinder } from '../GeometricFigures/MyCilinder.js';
 
 export class MyBee extends CGFobject {
-    constructor(scene) 
+    constructor(scene,x,y,z) 
     {
         super(scene);
+        this.x = x; 
+        this.y = y; 
+        this.z = z;
         this.head = new MySphere(this.scene, 32, 16, false, 0.1); 
         this.body = new MySphere(this.scene, 32, 16, false, 0.1);
         this.wing = new MySphere(this.scene, 32, 16, false, 0.1);
         this.legs = new MyCilinder(this.scene, 32, 16, 0.01);
         this.paw = new MySphere(this.scene, 32, 16, false, 0.1);
         this.time = 0; 
+        this.orientation = 0; 
+        this.speed = 0; 
     }
 
     update(t) 
@@ -22,6 +27,26 @@ export class MyBee extends CGFobject {
 
     updateWings(t) {
         this.timeWings = Math.abs(Math.PI * (t/ 1000)); 
+    }
+
+    move() 
+    {
+        this.scene.pushMatrix();
+        this.scene.translate(this.x, this.y, this.z);
+        this.scene.rotate(this.orientation,0,1,0);
+        this.display();
+        this.scene.popMatrix();
+    }
+
+    turn(v) {
+        this.orientation -= v * 0.8 * this.scene.speedFactor;
+    }
+
+    accelerate(v) {
+        this.speed += v * 0.1 * this.scene.speedFactor; 
+        if(this.speed <= 0) {
+            this.speed = 0;
+        }
     }
     
 
