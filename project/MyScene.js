@@ -105,10 +105,10 @@ export class MyScene extends CGFscene {
     if (this.displayAxis) this.axis.display();
     // ---- BEGIN Primitive drawing section
 
-    this.pushMatrix();
-    this.flower.setPosition(0,0);
-    this.flower.display();
-    this.popMatrix();
+    // this.pushMatrix();
+    // this.flower.setPosition(0,0);
+    // this.flower.display();
+    // this.popMatrix();
         
     this.pushMatrix();
     this.appearance.apply();
@@ -120,6 +120,7 @@ export class MyScene extends CGFscene {
 
     
     // this.pushMatrix();
+    // this.translate(0,-100,0);
     // this.garden.display();
     // this.popMatrix();
  

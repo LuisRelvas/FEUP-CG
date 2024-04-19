@@ -107,9 +107,9 @@ export class MyFlower extends CGFobject {
 	display() {
 		let finalPos = []; 
 		this.scene.pushMatrix();
+		this.scene.translate(this.x, 0, this.y);
 		this.scene.pushMatrix();
 		this.scene.rotate(-90 * Math.PI / 180, 1, 0, 0);
-
 		finalPos = this.steam.display();
 		this.scene.pushMatrix();
 		this.scene.translate(finalPos[0],0,finalPos[1]);
@@ -131,7 +131,6 @@ export class MyFlower extends CGFobject {
 		this.scene.translate(finalPos[0], 0, finalPos[1]); 
 		this.scene.rotate(finalPos[2] * Math.PI / 180, 0, 1, 0);
 		this.displayPetals();
-		
 		this.scene.popMatrix();
 		this.scene.popMatrix();
 		this.scene.popMatrix();
