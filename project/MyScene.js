@@ -9,6 +9,7 @@ import { MyCilinder } from "./GeometricFigures/MyCilinder.js";
 import { MyCone } from "./GeometricFigures/MyCone.js";
 import { MyRock } from "./Objects/MyRock.js"; 
 import { MyRockSet } from "./Objects/MyRockSet.js";
+import { MyBee } from "./Objects/MyBee.js";
 
 /**
  * MyScene
@@ -41,6 +42,7 @@ export class MyScene extends CGFscene {
     this.garden = new MyGarden(this, 5, 5);
     this.rock = new MyRock(this, 1, 32, 16); 
     this.rockSet = new MyRockSet(this, 10, 32, 16);
+    this.bee = new MyBee(this);
 
 
   
@@ -130,6 +132,11 @@ export class MyScene extends CGFscene {
     this.translate(0,-199,0);
     this.rockTexture.bind();
     this.rockSet.display();
+    this.popMatrix();
+
+    this.pushMatrix(); 
+    this.scale(5,5,5);
+    this.bee.display();
     this.popMatrix();
 
     
