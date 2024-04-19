@@ -136,6 +136,9 @@ export class MyScene extends CGFscene {
 
     this.pushMatrix(); 
     this.scale(5,5,5);
+    const currentTime = Date.now();
+    this.bee.update(currentTime);
+    this.bee.updateWings(currentTime);
     this.bee.display();
     this.popMatrix();
 

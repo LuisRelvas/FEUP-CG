@@ -12,11 +12,25 @@ export class MyBee extends CGFobject {
         this.wing = new MySphere(this.scene, 32, 16, false, 0.1);
         this.legs = new MyCilinder(this.scene, 32, 16, 0.01);
         this.paw = new MySphere(this.scene, 32, 16, false, 0.1);
-
+        this.time = 0; 
     }
+
+    update(t) 
+    {
+        this.time = Math.PI * (t/ 1000);
+    }
+
+    updateWings(t) {
+        this.timeWings = Math.abs(Math.PI * (t/ 1000)); 
+    }
+    
 
     display() 
     {
+
+        
+        this.scene.pushMatrix(); 
+        this.scene.translate(0, Math.sin(this.time), 0); // Add this line to make the bee go up and down
         // Head
         this.scene.pushMatrix();
         this.scene.translate(0.3, 0, 0);
@@ -29,29 +43,26 @@ export class MyBee extends CGFobject {
         this.body.display();
         this.scene.popMatrix();
 
-        // Wings RIGHT 
+        // // Wings RIGHT 
         this.scene.pushMatrix();
-        this.scene.rotate(90 * Math.PI / 180, 0, 1, 0);
-        this.scene.rotate(30 * Math.PI / 180, 1, 0, 0);
-        this.scene.rotate(30 * Math.PI / 180, 0, 1, 0); 
-        this.scene.scale(0.5, 0.1, 2);
-        this.scene.pushMatrix(); 
-        this.scene.translate(-0.1,1.2,-0);
+        this.scene.rotate(90 * Math.PI / 180, 0, 1,0);
+        this.scene.rotate(90 * Math.PI / 180, 1, 0, 0);
+        this.scene.rotate(90 * Math.PI / 180, 0, 0, 1); 
+        this.scene.rotate(5 * Math.PI / 180 + Math.abs(Math.sin(this.timeWings * 3)),1,0,0);
+        this.scene.translate(0,0,-0.2);
+        this.scene.scale(0.5,0.1,2);
         this.wing.display();
         this.scene.popMatrix();
-        this.scene.popMatrix();
 
-
-        // Wings RIGHT 
+        // Wings LEFT
         this.scene.pushMatrix();
-        this.scene.rotate(90 * Math.PI / 180, 0, 1, 0);
-        this.scene.rotate(30 * Math.PI / 180, 1, 0, 0);
-        this.scene.rotate(-30 * Math.PI / 180, 0, 1, 0); 
-        this.scene.scale(0.5, 0.1, 2);
-        this.scene.pushMatrix(); 
-        this.scene.translate(0.1,1.2,0);
+        this.scene.rotate(90 * Math.PI / 180, 0, 1,0);
+        this.scene.rotate(90 * Math.PI / 180, 1, 0, 0);
+        this.scene.rotate(-90 * Math.PI / 180, 0, 0, 1); 
+        this.scene.rotate(5 * Math.PI / 180 + Math.abs(Math.sin(this.timeWings * 3)),1,0,0);
+        this.scene.translate(0,0,-0.2);
+        this.scene.scale(0.5,0.1,2);
         this.wing.display();
-        this.scene.popMatrix();
         this.scene.popMatrix();
 
         // Legs
@@ -130,5 +141,6 @@ export class MyBee extends CGFobject {
         this.scene.translate(0.32,0,0);
         this.legs.display();
         this.scene.popMatrix(); 
+        this.scene.popMatrix();
     }
 }
