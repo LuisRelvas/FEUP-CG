@@ -29,7 +29,7 @@ export class MySteam extends CGFobject {
 		let numCil = this.cilinderSizesArray.length;
 		for(let i=0; i< numCil; i++){
 			let incl = Math.random()*15;
-			let curCil = new MyCilinder(this.scene, 16, 8, 0.1);
+			let curCil = new MyCilinder(this.scene, 16, 8, this.radius);
 			this.cilinders.push(curCil);
 			if(i == 0) 
 			{
@@ -56,42 +56,43 @@ export class MySteam extends CGFobject {
 	
 
 	display() {
-		let lastPosX = 0; 
+		let lastPosX = 0;
 		let lastPosY = 0;
 		let lastPosZ = 0;
 		let numCil = this.cilinderSizesArray.length;
-		let cilinderSize = this.size / numCil;
-		for(let i=0; i< numCil; i++){
+	
+		for(let i = 0; i < numCil; i++) {
 			this.scene.pushMatrix();
+	
 			let curCil = this.cilinders[i];
 			this.steamMaterial.apply();
+	
 			this.scene.pushMatrix();
-			this.scene.translate(lastPosX,0,lastPosZ);
-			this.scene.pushMatrix();
-			this.scene.scale(1,1,this.cilinderSizesArray[i]);
-			this.scene.pushMatrix();
-			this.scene.rotate(this.cilindersInclination[i]*Math.PI/180, 0,1,0);
+	
+			this.scene.translate(lastPosX, lastPosY, lastPosZ);
+	
+			this.scene.rotate(this.cilindersInclination[i] * Math.PI/180, 0, 1, 0);
+	
+			this.scene.scale(1, 1, this.cilinderSizesArray[i]);
+	
 			curCil.display();
+	
 			this.scene.popMatrix();
-			this.scene.popMatrix();
-			this.scene.popMatrix();
-			if(i == 0) 
-			{
-				lastPosX = lastPosX;
-				lastPosZ = lastPosZ + this.cilinderSizesArray[i] - this.radius;
-			}
-			else {
-			lastPosZ = lastPosZ + this.cilinderSizesArray[i] - (4*this.radius) * Math.sin(this.cilindersInclination[i]*Math.PI/180);
-            lastPosX = lastPosX + Math.sin(this.cilindersInclination[i]*Math.PI/180) ;
-			}
+	
+			lastPosZ += this.cilinderSizesArray[i] * Math.cos(this.cilindersInclination[i] * Math.PI/180);
+			lastPosX += this.cilinderSizesArray[i] * Math.sin(this.cilindersInclination[i] * Math.PI/180);
 		}
-		this.scene.popMatrix();
-
+	
 		console.log("The value of the lastPosZ is: " + lastPosZ);
-		
-		return [lastPosX,lastPosZ,this.cilindersInclination[this.cilindersInclination.length-1]]; 
-		
-		}	
+	
+		this.scene.popMatrix();
+	
+		return [lastPosX, lastPosZ, this.cilindersInclination[this.cilindersInclination.length - 1]];
+	}
+	
+	
+
+
 
 	enableNormalViz(){
         this.steam.enableNormalViz()

@@ -10,6 +10,7 @@ import { MyCone } from "./GeometricFigures/MyCone.js";
 import { MyRock } from "./Objects/MyRock.js"; 
 import { MyRockSet } from "./Objects/MyRockSet.js";
 import { MyBee } from "./Objects/MyBee.js";
+import { MySteam } from "./Objects/MySteam.js";
 
 /**
  * MyScene
@@ -45,6 +46,7 @@ export class MyScene extends CGFscene {
     this.rock = new MyRock(this, 1, 32, 16); 
     this.rockSet = new MyRockSet(this, 10, 32, 16);
     this.bee = new MyBee(this,0,0,0);
+    this.stem = new MySteam(this, 0.1, 0.1, 0.1, 10, [1, 1, 1, 1, 1]);
 
 
     //Objects connected to MyInterface
@@ -145,12 +147,16 @@ export class MyScene extends CGFscene {
     // Draw axis
     if (this.displayAxis) this.axis.display();
     // ---- BEGIN Primitive drawing section
-
-    // this.pushMatrix();
-    // this.flower.setPosition(0,0);
-    // this.flower.display();
-    // this.popMatrix();
-        
+    /*
+    this.pushMatrix();
+    this.flower.setPosition(0,0);
+    this.flower.display();
+    this.popMatrix();
+    */
+   
+    this.pushMatrix();
+    this.stem.display();
+    this.popMatrix();
     // this.pushMatrix();
     // this.appearance.apply();
     // this.translate(0,-100,0);
@@ -159,19 +165,19 @@ export class MyScene extends CGFscene {
     // this.plane.display();
     // this.popMatrix();
 
-    this.pushMatrix();
-    this.translate(0,-199,0);
-    this.rockTexture.bind();
-    this.rockSet.display();
-    this.popMatrix();
+    // this.pushMatrix();
+    // this.translate(0,-199,0);
+    // this.rockTexture.bind();
+    // this.rockSet.display();
+    // this.popMatrix();
 
-    this.pushMatrix(); 
-    this.scale(5,5,5);
-    const currentTime = Date.now();
-    this.bee.update(currentTime);
-    this.bee.updateWings(currentTime);
-    this.bee.move();
-    this.popMatrix();
+    // this.pushMatrix(); 
+    // this.scale(5,5,5);
+    // const currentTime = Date.now();
+    // this.bee.update(currentTime);
+    // this.bee.updateWings(currentTime);
+    // this.bee.move();
+    // this.popMatrix();
 
     
     // this.pushMatrix();
