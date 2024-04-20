@@ -73,7 +73,7 @@ export class MySteam extends CGFobject {
 	
 			this.scene.rotate(this.cilindersInclination[i] * Math.PI/180, 0, 1, 0);
 	
-			this.scene.scale(1, 1, this.cilinderSizesArray[i]);
+			this.scene.scale(1, 1, this.cilinderSizesArray[i] * 1.02);
 	
 			curCil.display();
 	
