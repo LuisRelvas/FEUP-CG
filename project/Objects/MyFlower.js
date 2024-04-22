@@ -138,10 +138,6 @@ export class MyFlower extends CGFobject {
 		this.scene.popMatrix();
 		this.scene.popMatrix();
 		
-
-		
-		
-		
 	}
 
 	enableNormalViz(){

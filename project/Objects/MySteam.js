@@ -1,5 +1,6 @@
 import {CGFappearance, CGFobject} from '../../lib/CGF.js';
 import { MyCilinder } from '../GeometricFigures/MyCilinder.js';
+import { MyTriangle } from '../GeometricFigures/MyTriangle.js';
 
 
 /**
@@ -20,6 +21,8 @@ export class MySteam extends CGFobject {
 		this.cilindersInclination = [];
 		this.radius = 0.1; 
 		this.sideSteam = new MyCilinder(this.scene, 16, 8, 0.1);
+		this.petal = new MyTriangle(this.scene);
+		this.petal2 = new MyTriangle(this.scene);
 		this.createCilinders();
 		this.initialMaterials();
 
@@ -28,7 +31,7 @@ export class MySteam extends CGFobject {
 	createCilinders(){
 		let numCil = this.cilinderSizesArray.length;
 		for(let i=0; i< numCil; i++){
-			let incl = Math.random()*15;
+			let incl = Math.random()*10;
 			let curCil = new MyCilinder(this.scene, 16, 8, this.radius);
 			this.cilinders.push(curCil);
 			if(i == 0) 
@@ -73,7 +76,7 @@ export class MySteam extends CGFobject {
 	
 			this.scene.rotate(this.cilindersInclination[i] * Math.PI/180, 0, 1, 0);
 	
-			this.scene.scale(1, 1, this.cilinderSizesArray[i] * 1.02);
+			this.scene.scale(1, 1, this.cilinderSizesArray[i] * 1.025);
 	
 			curCil.display();
 	
@@ -81,6 +84,36 @@ export class MySteam extends CGFobject {
 	
 			lastPosZ += this.cilinderSizesArray[i] * Math.cos(this.cilindersInclination[i] * Math.PI/180);
 			lastPosX += this.cilinderSizesArray[i] * Math.sin(this.cilindersInclination[i] * Math.PI/180);
+
+			if(this.cilindersInclination[i] != 0 && i != numCil - 1) 
+			{
+				//create a cilinder with a petal
+				this.scene.pushMatrix();
+				this.scene.translate(lastPosX, lastPosY, lastPosZ);
+				this.scene.rotate(-45 * Math.PI/180, 0, 1, 0);
+				this.scene.scale(1, 1, 1);
+				this.sideSteam.display();
+				this.scene.popMatrix();
+				this.scene.pushMatrix();
+				this.scene.translate(lastPosX,lastPosY,lastPosZ);
+				this.scene.translate(-1,0,1);
+				this.scene.rotate(-45 * Math.PI / 180, 0, 1, 0);
+				this.scene.rotate(-90 * Math.PI / 180, 1, 0 ,0);
+				this.scene.rotate(90 * Math.PI / 180 , 0, 1, 0);
+				this.scene.scale(0.5,1,0.1)
+				this.petal.display();
+				this.scene.popMatrix();
+				this.scene.pushMatrix();
+				this.scene.translate(lastPosX, lastPosY,lastPosZ);
+				this.scene.translate(-1,0,1);
+				this.scene.rotate(-45 * Math.PI / 180, 0, 1, 0); 
+				this.scene.rotate(90 * Math.PI / 180, 1,0,0);
+				this.scene.rotate(90 * Math.PI / 180 , 0, 1, 0);
+				this.scene.rotate(-10 * Math.PI / 180 , 1, 0, 0); 
+				this.scene.scale(0.5,1,0.1)
+				this.petal2.display();
+				this.scene.popMatrix();
+			}
 		}
 	
 		console.log("The value of the lastPosZ is: " + lastPosZ);
