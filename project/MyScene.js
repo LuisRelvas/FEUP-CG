@@ -43,13 +43,15 @@ export class MyScene extends CGFscene {
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this,30);
     this.sphere = new MySphere(this,32,16,0.1);
-    this.flower =  new MyFlower(this);
+    this.flower =  new MyFlower(this,4,3);
     this.garden = new MyGarden(this, 5, 5);
     this.rock = new MyRock(this, 1, 32, 16); 
     this.rockSet = new MyRockSet(this, 10, 32, 16);
     this.bee = new MyBee(this,0,0,0);
     this.stem = new MySteam(this, 0.1, 0.1, 0.1, 10, [1, 1, 1, 1, 1]);
-    this.hive = new MyHive(this);
+    this.hive = new MyHive(this,0,0);
+    this.pollenPos = []; 
+    this.posFlowers = [];
 
 
     //Objects connected to MyInterface
@@ -68,7 +70,35 @@ export class MyScene extends CGFscene {
     this.appearance.setTextureWrap('REPEAT', 'REPEAT');
   }
 
-  
+  checkRadius() {
+    for (let i = 0; i < this.posFlowers.length; i++) {
+        let flowerX = this.posFlowers[i][0];
+        let flowerY = this.posFlowers[i][2];
+        let flowerZ = this.posFlowers[i][1]; 
+
+        let distance = Math.sqrt(
+            Math.pow(this.bee.x - flowerX, 2) + 
+            Math.pow(this.bee.y - flowerY, 2) + 
+            Math.pow(this.bee.z - flowerZ, 2) 
+        );
+
+        console.log("Distance to flower:", distance); 
+
+        if (distance < 7) { 
+            this.bee.animation = false; 
+            //move the bee to the flower
+            this.bee.x = flowerX;
+            this.bee.y = flowerY;
+            this.bee.z = flowerZ;
+
+            console.log("Bee stopped!"); 
+            break; 
+        } else {
+            this.bee.animation = true; 
+        }
+    }
+}
+
 
   checkKeys() 
   {
@@ -101,6 +131,17 @@ export class MyScene extends CGFscene {
       this.bee.orientation -= 0.1 * this.scaleFactor; 
       text+=" D "; 
       keysPressed = true;
+    }
+    if(this.gui.isKeyPressed("KeyF"))
+    {
+        this.bee.y -= 0.01;
+        text+=" F ";
+        keysPressed = true;
+    }
+    if(this.gui.isKeyPressed("KeyP"))
+    {
+      text+=" P "; 
+      this.bee.animation = true;          
     }
     if (keysPressed) {
       console.log(text);
@@ -160,11 +201,11 @@ export class MyScene extends CGFscene {
     if (this.displayAxis) this.axis.display();
     // ---- BEGIN Primitive drawing section
 
-    this.pushMatrix();
-    this.flower.setPosition(0,0);
-    this.flower.display();
-    this.popMatrix();
+    // this.pushMatrix();
+    // this.hive.display();
+    // this.popMatrix();
 
+   
     // this.pushMatrix();
     // this.appearance.apply();
     // this.translate(0,-100,0);
@@ -179,25 +220,38 @@ export class MyScene extends CGFscene {
     // this.rockSet.display();
     // this.popMatrix();
 
-    this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA)
-    this.gl.enable(this.gl.BLEND)
+    // this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA)
+    // this.gl.enable(this.gl.BLEND)
+    // this.pushMatrix(); 
+    // this.flower.setPosition(50,50);
+    // this.flower.display();
+    // this.popMatrix();
+    
+   
+   
 
     this.pushMatrix(); 
-    this.hive
-
-    // this.pushMatrix(); 
-    // this.scale(5,5,5);
-    // const currentTime = Date.now();
-    // this.bee.update(currentTime);
-    // this.bee.updateWings(currentTime);
-    // this.bee.move();
-    // this.popMatrix();
+    this.scale(1,1,1);
+    const currentTime = Date.now();
+    this.bee.update(currentTime);
+    this.bee.updateWings(currentTime);
+    this.bee.move();
+    this.popMatrix();
 
     
-    // this.pushMatrix();
-    // this.translate(0,-200,0);
-    // this.garden.display();
-    // this.popMatrix();
+    this.pushMatrix();
+    this.translate(0,-20,0);
+    this.posFlowers = this.garden.display();
+    console.log("the value of the posFlowers is " + this.posFlowers);
+    this.popMatrix();
+    this.pushMatrix();
+    this.translate(0,-20,0);
+    this.pollenPos = this.bee.displayPolen(this.posFlowers);
+    this.popMatrix();
+    //console.log("The value of the pollenPos is " + this.pollenPos); 
+
+    
+   
 
     // this.pushMatrix(); 
     // this.stem.display();
@@ -220,6 +274,7 @@ export class MyScene extends CGFscene {
     // ---- END Primitive drawing section
   }
   update(time) {
+    this.checkRadius();
     this.checkKeys();
   }
     

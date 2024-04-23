@@ -3,6 +3,7 @@ import { MySphere } from '../GeometricFigures/MySphere.js';
 import { MyTriangle } from '../GeometricFigures/MyTriangle.js';
 import { MyCilinder } from '../GeometricFigures/MyCilinder.js';
 import { MyCone } from '../GeometricFigures/MyCone.js';
+import { MyPollen } from './MyPollen.js';
 
 export class MyBee extends CGFobject {
     constructor(scene,x,y,z) 
@@ -11,17 +12,40 @@ export class MyBee extends CGFobject {
         this.x = x; 
         this.y = y; 
         this.z = z;
+        this.pollenPos = []; 
+        this.animation = true; 
         this.head = new MySphere(this.scene, 32, 16, false, 0.1); 
         this.body = new MySphere(this.scene, 32, 16, false, 0.1);
         this.wing = new MySphere(this.scene, 32, 16, false, 0.1);
         this.legs = new MyCilinder(this.scene, 32, 16, 0.01);
         this.paw = new MySphere(this.scene, 32, 16, false, 0.1);
         this.sting = new MyCone(this.scene, 32, 16, 0.01, 0.5);
+        this.pollen = new MyPollen(this.scene,1,-10,1);
         this.time = 0; 
         this.timeWings = 10;
         this.orientation = 0; 
         this.speed = 0; 
+        this.transport = false; 
+        this.scene.pushMatrix();
+        this.scene.popMatrix();
         this.initMaterials(); 
+    }
+
+    displayPolen(posFlowers) 
+    {
+        let yOffset = 0.1; 
+        let posPollen = []; 
+        for(let i = 0; i < posFlowers.length; i++) 
+        {
+
+            this.scene.pushMatrix();
+            this.scene.rotate(90 * Math.PI / 180, 1, 0, 0);
+            //this.scene.translate(0,0,14);
+            posPollen.push(this.pollen.display(posFlowers[i][0], posFlowers[i][1], 0));
+            this.pollen.display(posFlowers[i][0], posFlowers[i][1], 0);
+            this.scene.popMatrix();
+        }
+        return posPollen;
     }
 
     initMaterials() 
@@ -56,17 +80,32 @@ export class MyBee extends CGFobject {
 
     update(t) 
     {
+        if(this.animation) 
+        {
         this.time = Math.PI * (t/ 1000);
+        }
+        else 
+        {
+            this.time = 0;
+        }
     }
 
     updateWings(t) {
+        if(this.animation)
+        {
         this.timeWings = Math.abs(Math.PI * (t/ 1000)); 
+        }
+        else 
+        {
+            this.timeWings = 0;
+        }
     }
 
     move() 
     {
         this.scene.pushMatrix();
         this.scene.translate(this.x, this.y, this.z);
+        console.log("position of the bee: " + this.x + " " + this.y + " " + this.z);
         this.scene.rotate(this.orientation,0,1,0);
         this.display();
         this.scene.popMatrix();
@@ -86,8 +125,11 @@ export class MyBee extends CGFobject {
 
     display() 
     {
-
         
+        if(this.transport) 
+        {
+            this.displayPolen();
+        }
         this.scene.pushMatrix(); 
         this.scene.translate(0, Math.sin(this.time), 0);
         // Head
@@ -198,7 +240,6 @@ export class MyBee extends CGFobject {
         this.sting.display();
         this.scene.popMatrix();
 
-
         this.scene.gl.enable(this.scene.gl.BLEND);
         this.scene.gl.blendFunc(this.scene.gl.SRC_ALPHA, this.scene.gl.ONE_MINUS_SRC_ALPHA);    
         // Wings RIGHT 
@@ -227,7 +268,6 @@ export class MyBee extends CGFobject {
         this.scene.popMatrix();
         
         this.scene.gl.disable(this.scene.gl.BLEND);
-
 
     }
 }

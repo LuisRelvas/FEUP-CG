@@ -14,9 +14,9 @@ export class MyFlower extends CGFobject {
 	constructor(scene) {
 		super(scene); 
 		this.petals= [];
+		this.pollen = new MyPollen(this.scene);
 		let totalSize = this.createSteam();
 		this.petaltextures = ["/project/images/petalPink.jpg"]
-		this.pollen = new MyPollen(this.scene);
 		this.createReceptacle(totalSize);
 		//layer 1
 		this.createPetals();
@@ -101,42 +101,39 @@ export class MyFlower extends CGFobject {
 	}
 
 	display() {
+		let finalPos = []; 
 		this.scene.pushMatrix();
 		this.scene.translate(this.x, 0, this.y);
-	
-		// Stem
 		this.scene.pushMatrix();
 		this.scene.rotate(-90 * Math.PI / 180, 1, 0, 0);
-		const finalPos = this.steam.display();
-		this.scene.popMatrix(); 
-	
-		// Receptacle and Petals
+		finalPos = this.steam.display();
 		this.scene.pushMatrix();
-		this.scene.translate(finalPos[0], 0, finalPos[1]);
-	
-		// Receptacle (first)
+		this.scene.translate(finalPos[0],0,finalPos[1]);
 		this.scene.pushMatrix();
-		this.scene.rotate(90 * Math.PI / 180, 1, 0, 0);
+		this.scene.rotate(90 * Math.PI / 180, 1,0,0);
+		this.scene.pushMatrix();
 		this.scene.rotate(-finalPos[2] * Math.PI / 180, 0, 0, 1);
-		this.receptacle.display(finalPos); 
-		this.pollen.display();
-		this.scene.popMatrix(); 
-	
-		// Receptacle (flipped)
-		this.scene.pushMatrix();
-		this.scene.rotate(90 * Math.PI / 180, 1, 0, 0);
-		this.scene.rotate(-finalPos[2] * Math.PI / 180, 0, 0, 1); 
-		this.scene.scale(1, -1, -1);
 		this.receptacle.display(finalPos);
 		this.scene.popMatrix();
-	
-		// Petals
+		this.scene.pushMatrix();
+		this.scene.scale(1,-1,-1);
+		this.scene.rotate(finalPos[2] * Math.PI / 180, 0, 0, 1); 
+		this.receptacle.display(finalPos);
+		this.scene.popMatrix();
+		this.scene.popMatrix();
+		this.scene.popMatrix();
+		this.scene.pushMatrix();
+		this.scene.translate(finalPos[0], 0, finalPos[1]); 
 		this.scene.rotate(finalPos[2] * Math.PI / 180, 0, 1, 0);
 		this.displayPetals();
-	
-		this.scene.popMatrix(); 
-		this.scene.popMatrix(); 
+		this.scene.popMatrix();
+		this.scene.popMatrix();
+		this.scene.popMatrix();
+		this.scene.popMatrix();
+		this.scene.popMatrix();
+		
 	}
+
 	
 	
 	enableNormalViz(){

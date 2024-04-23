@@ -7,6 +7,7 @@ export class MyGarden extends CGFobject{
         this.rows = rows;
         this.cols = cols;
         this.flowers = [];
+        this.flowerPositions = [];
 
         this.createFlowers();
     }
@@ -20,8 +21,11 @@ export class MyGarden extends CGFobject{
                 let offsetX = Math.random() * (spacing / 2);  
                 let offsetY = Math.random() * (spacing / 2);  
                 // Subtract half of the total size from each position to center the garden
-                flower.setPosition(i * spacing - totalSize / 2 + offsetX, j * spacing - totalSize / 2 + offsetY);
+                let posX = i * spacing - totalSize / 2 + offsetX;
+                let posY = j * spacing - totalSize / 2 + offsetY;
+                flower.setPosition(posX, posY);
                 this.flowers.push(flower);
+                this.flowerPositions.push([posX, posY,-20]);
             }
         }
     }
@@ -30,5 +34,7 @@ export class MyGarden extends CGFobject{
         for (let flower of this.flowers) {
             flower.display();
         }
+        return this.flowerPositions; 
+
     }
 }

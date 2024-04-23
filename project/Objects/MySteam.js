@@ -44,10 +44,8 @@ export class MySteam extends CGFobject {
 			else 
 			{
 				this.cilindersInclination.push(incl);
-				console.log("The value of the angle is " + incl)
 			}
 		}
-		console.log("the total length of the array is: " + this.cilindersInclination.length);
 	}
 
 	initialMaterials() 
@@ -128,7 +126,6 @@ export class MySteam extends CGFobject {
 			}
 		}
 	
-		console.log("The value of the lastPosZ is: " + lastPosZ);
 	
 		this.scene.popMatrix();
 	
