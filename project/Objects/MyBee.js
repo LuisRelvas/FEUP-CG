@@ -1,7 +1,8 @@
-import { CGFobject } from '../../lib/CGF.js';
+import { CGFobject, CGFtexture, CGFappearance } from '../../lib/CGF.js';
 import { MySphere } from '../GeometricFigures/MySphere.js';
 import { MyTriangle } from '../GeometricFigures/MyTriangle.js';
 import { MyCilinder } from '../GeometricFigures/MyCilinder.js';
+import { MyCone } from '../GeometricFigures/MyCone.js';
 
 export class MyBee extends CGFobject {
     constructor(scene,x,y,z) 
@@ -15,9 +16,42 @@ export class MyBee extends CGFobject {
         this.wing = new MySphere(this.scene, 32, 16, false, 0.1);
         this.legs = new MyCilinder(this.scene, 32, 16, 0.01);
         this.paw = new MySphere(this.scene, 32, 16, false, 0.1);
+        this.sting = new MyCone(this.scene, 32, 16, 0.01, 0.5);
         this.time = 0; 
+        this.timeWings = 10;
         this.orientation = 0; 
         this.speed = 0; 
+        this.initMaterials(); 
+    }
+
+    initMaterials() 
+    {
+        this.beeMaterial = new CGFappearance(this.scene);
+		this.beeTexture = new CGFtexture(this.scene, "/project/images/bee_texture.jpg");
+		this.beeMaterial.setTexture(this.beeTexture);
+		this.beeMaterial.setTextureWrap('REPEAT', 'REPEAT');
+        this.legsMaterial = new CGFappearance(this.scene);
+        this.legsTexture = new CGFtexture(this.scene, "/project/images/legs_texture_1.jpg");
+        this.legsMaterial.setTexture(this.legsTexture);
+        this.legsMaterial.setTextureWrap('REPEAT', 'REPEAT');
+        this.headMaterial = new CGFappearance(this.scene);
+        this.headTexture = new CGFtexture(this.scene, "/project/images/bee_head_texture.jpg");
+        this.headMaterial.setTexture(this.headTexture);
+        this.headMaterial.setTextureWrap('REPEAT', 'REPEAT');
+        this.wingMaterial = new CGFappearance(this.scene);
+        this.wingMaterial.setDiffuse(0.8, 0.8, 0.8, 0.5); 
+        this.wingMaterial.setSpecular(0.8, 0.8, 0.8, 0.5);
+        this.wingMaterial.setShininess(10.0);
+    }
+
+    reset() 
+    {
+        this.scene.pushMatrix(); 
+        this.x = 0; 
+        this.y = 0;
+        this.z = 0; 
+        this.orientation = 0;
+        this.scene.popMatrix();
     }
 
     update(t) 
@@ -55,50 +89,33 @@ export class MyBee extends CGFobject {
 
         
         this.scene.pushMatrix(); 
-        this.scene.translate(0, Math.sin(this.time), 0); // Add this line to make the bee go up and down
+        this.scene.translate(0, Math.sin(this.time), 0);
         // Head
         this.scene.pushMatrix();
+        this.headMaterial.apply();
         this.scene.translate(0.3, 0, 0);
         this.head.display();
         this.scene.popMatrix();
 
         // Body
         this.scene.pushMatrix();
-        this.scene.scale(3, 0.9, 1);
+        this.beeMaterial.apply();
+        this.scene.rotate(90 * Math.PI / 180, 0, 0,1);
+        this.scene.scale(0.9,3, 1);
         this.body.display();
-        this.scene.popMatrix();
-
-        // // Wings RIGHT 
-        this.scene.pushMatrix();
-        this.scene.rotate(90 * Math.PI / 180, 0, 1,0);
-        this.scene.rotate(90 * Math.PI / 180, 1, 0, 0);
-        this.scene.rotate(90 * Math.PI / 180, 0, 0, 1); 
-        this.scene.rotate(5 * Math.PI / 180 + Math.abs(Math.sin(this.timeWings * 3)),1,0,0);
-        this.scene.translate(0,0,-0.2);
-        this.scene.scale(0.5,0.1,2);
-        this.wing.display();
-        this.scene.popMatrix();
-
-        // Wings LEFT
-        this.scene.pushMatrix();
-        this.scene.rotate(90 * Math.PI / 180, 0, 1,0);
-        this.scene.rotate(90 * Math.PI / 180, 1, 0, 0);
-        this.scene.rotate(-90 * Math.PI / 180, 0, 0, 1); 
-        this.scene.rotate(5 * Math.PI / 180 + Math.abs(Math.sin(this.timeWings * 3)),1,0,0);
-        this.scene.translate(0,0,-0.2);
-        this.scene.scale(0.5,0.1,2);
-        this.wing.display();
         this.scene.popMatrix();
 
         // Legs
         //First Pair of Legs Z = 0 
         this.scene.pushMatrix();
+        this.legsMaterial.apply();
         this.scene.rotate(45 * Math.PI / 180, 1, 0, 0);
         this.scene.scale(1, 1, 0.2);
         this.legs.display();
         this.scene.popMatrix();
 
         this.scene.pushMatrix(); 
+        this.legsMaterial.apply();
         this.scene.rotate(135 * Math.PI/ 180, 1, 0, 0);
         this.scene.scale(1, 1, 0.2);
         this.legs.display();
@@ -107,6 +124,7 @@ export class MyBee extends CGFobject {
         //Second Pair of legs Z = 0.5
 
         this.scene.pushMatrix();
+        this.legsMaterial.apply();
         this.scene.rotate(45 * Math.PI / 180, 1, 0, 0);
         this.scene.translate(0.1, 0, 0);
         this.scene.scale(1, 1, 0.2);
@@ -114,6 +132,7 @@ export class MyBee extends CGFobject {
         this.scene.popMatrix();
 
         this.scene.pushMatrix(); 
+        this.legsMaterial.apply();
         this.scene.rotate(135 * Math.PI/ 180, 1, 0, 0);
         this.scene.translate(0.1, 0, 0);
         this.scene.scale(1, 1, 0.2);
@@ -123,6 +142,7 @@ export class MyBee extends CGFobject {
         //Thrid Pair of legs Z = 0.5
 
         this.scene.pushMatrix();
+        this.legsMaterial.apply();
         this.scene.rotate(45 * Math.PI / 180, 1, 0, 0);
         this.scene.translate(-0.1, 0, 0);
         this.scene.scale(1, 1, 0.2);
@@ -130,6 +150,7 @@ export class MyBee extends CGFobject {
         this.scene.popMatrix();
 
         this.scene.pushMatrix(); 
+        this.legsMaterial.apply();
         this.scene.rotate(135 * Math.PI/ 180, 1, 0, 0);
         this.scene.translate(-0.1, 0, 0);
         this.scene.scale(1, 1, 0.2);
@@ -145,6 +166,7 @@ export class MyBee extends CGFobject {
 
         //Eyes Left 
         this.scene.pushMatrix();
+        this.legsMaterial.apply();
         this.scene.scale(0.2, 0.2, 0.2);
         this.scene.translate(1.9, 0.2, -0.2); 
         this.paw.display();
@@ -152,6 +174,7 @@ export class MyBee extends CGFobject {
 
         //Antenas Right
         this.scene.pushMatrix(); 
+        this.legsMaterial.apply();
         this.scene.rotate(-45 * Math.PI / 180, 1, 0, 0);
         this.scene.scale(1,1,0.15);
         this.scene.translate(0.32,0,0);
@@ -161,11 +184,50 @@ export class MyBee extends CGFobject {
 
         //Antenas Left  
         this.scene.pushMatrix(); 
+        this.legsMaterial.apply();
         this.scene.rotate(-135 * Math.PI / 180, 1, 0, 0);
         this.scene.scale(1,1,0.15);
         this.scene.translate(0.32,0,0);
         this.legs.display();
         this.scene.popMatrix(); 
+
+        //Sting 
+        this.scene.pushMatrix(); 
+        this.legsMaterial.apply();
+        this.scene.rotate(90 * Math.PI / 180 , 0,0,1);
+        this.sting.display();
         this.scene.popMatrix();
+
+
+        this.scene.gl.enable(this.scene.gl.BLEND);
+        this.scene.gl.blendFunc(this.scene.gl.SRC_ALPHA, this.scene.gl.ONE_MINUS_SRC_ALPHA);    
+        // Wings RIGHT 
+        this.scene.pushMatrix();
+        this.wingMaterial.apply();
+        this.scene.rotate(90 * Math.PI / 180, 0, 1,0);
+        this.scene.rotate(90 * Math.PI / 180, 1, 0, 0);
+        this.scene.rotate(90 * Math.PI / 180, 0, 0, 1); 
+        this.scene.rotate(5 * Math.PI / 180 + Math.abs(Math.sin(this.timeWings * 3)),1,0,0);
+        this.scene.translate(0,0,-0.2);
+        this.scene.scale(0.5,0.1,2);
+        this.wing.display();
+        this.scene.popMatrix();
+
+        // Wings LEFT
+        this.scene.pushMatrix();
+        this.wingMaterial.apply();
+        this.scene.rotate(90 * Math.PI / 180, 0, 1,0);
+        this.scene.rotate(90 * Math.PI / 180, 1, 0, 0);
+        this.scene.rotate(-90 * Math.PI / 180, 0, 0, 1); 
+        this.scene.rotate(5 * Math.PI / 180 + Math.abs(Math.sin(this.timeWings * 3)),1,0,0);
+        this.scene.translate(0,0,-0.2);
+        this.scene.scale(0.5,0.1,2);
+        this.wing.display();
+        this.scene.popMatrix();
+        this.scene.popMatrix();
+        
+        this.scene.gl.disable(this.scene.gl.BLEND);
+
+
     }
 }

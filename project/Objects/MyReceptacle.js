@@ -1,4 +1,4 @@
-import {CGFappearance, CGFobject} from '../../lib/CGF.js';
+import {CGFappearance, CGFobject, CGFtexture} from '../../lib/CGF.js';
 import { MySphere } from '../GeometricFigures/MySphere.js';
 import { MyCone } from '../GeometricFigures/MyCone.js'; 
 
@@ -11,12 +11,13 @@ import { MyCone } from '../GeometricFigures/MyCone.js';
 export class MyReceptacle extends CGFobject {
 	constructor(scene, r, g, b, size, totalSize ) {
 		super(scene); 
-		this.receptacle = new MyCone(this.scene, 32, 16, 0.5, 0.1);	
+		this.receptacle = new MyCone(this.scene, 32, 16, 0.5, 0.15);	
 		this.r = r;
         this.g = g;
         this.b = b;
 		this.size = size;
 		this.totalSize = totalSize; 
+		this.textures = ["/project/images/receptacle_flower_1.jpg", "/project/images/receptacle_flower_2.jpg", "/project/images/receptacle_flower_3.jpg"];
 		this.initialMaterials();
 
 	}
@@ -25,10 +26,9 @@ export class MyReceptacle extends CGFobject {
 	{
 
 		this.receptacleMaterial = new CGFappearance(this.scene);
-		this.receptacleMaterial.setAmbient(0.3, 0.3, 0.3, 1);
-		this.receptacleMaterial.setDiffuse(this.r, this.g, this.b, 1);
-		this.receptacleMaterial.setSpecular(this.r, this.g, this.b, 1);
-		this.receptacleMaterial.setShininess(10.0);
+		this.receptacleTexture = new CGFtexture(this.scene, this.textures[Math.round(Math.random() * 3)]);
+		this.receptacleMaterial.setTexture(this.receptacleTexture);
+		this.receptacleMaterial.setTextureWrap('REPEAT', 'REPEAT');
 
 	
 	};

@@ -11,6 +11,8 @@ import { MyRock } from "./Objects/MyRock.js";
 import { MyRockSet } from "./Objects/MyRockSet.js";
 import { MyBee } from "./Objects/MyBee.js";
 import { MySteam } from "./Objects/MySteam.js";
+import { MyHive } from "./Objects/MyHive.js";
+
 
 /**
  * MyScene
@@ -47,6 +49,7 @@ export class MyScene extends CGFscene {
     this.rockSet = new MyRockSet(this, 10, 32, 16);
     this.bee = new MyBee(this,0,0,0);
     this.stem = new MySteam(this, 0.1, 0.1, 0.1, 10, [1, 1, 1, 1, 1]);
+    this.hive = new MyHive(this);
 
 
     //Objects connected to MyInterface
@@ -71,9 +74,16 @@ export class MyScene extends CGFscene {
   {
     var text="Keys pressed: "; 
     var keysPressed = false;
+    if(this.gui.isKeyPressed("KeyR")) 
+    {
+      text+=" R"
+      this.bee.reset(); 
+      keysPressed = true;
+    }
     if (this.gui.isKeyPressed("KeyW")) {
-      text+=" W "; 
-      this.bee.x += 0.01 * this.speedFactor;
+      text += " W ";
+      this.bee.x += Math.cos(this.bee.orientation) * 0.01 * this.speedFactor;
+      this.bee.z += Math.sin(-this.bee.orientation) * 0.01 * this.speedFactor;
       keysPressed = true;
     }
     if (this.gui.isKeyPressed("KeyA")) {
@@ -83,7 +93,8 @@ export class MyScene extends CGFscene {
     }
     if (this.gui.isKeyPressed("KeyS")) {
       text+=" S "; 
-      this.bee.x -= 0.01 * this.speedFactor;
+      this.bee.x -= Math.cos(this.bee.orientation) * 0.01 * this.speedFactor;
+      this.bee.z -= Math.sin(-this.bee.orientation) * 0.01 * this.speedFactor;
       keysPressed = true;
     }
     if (this.gui.isKeyPressed("KeyD")) {
@@ -123,6 +134,7 @@ export class MyScene extends CGFscene {
     this.rockTexture = new CGFtexture(this, "images/rock.jpg");
     this.rockAppearance = new CGFappearance(this);
     this.rockAppearance.setTexture(this.rockTexture);
+
     
   }
 
@@ -148,10 +160,10 @@ export class MyScene extends CGFscene {
     if (this.displayAxis) this.axis.display();
     // ---- BEGIN Primitive drawing section
 
-    // this.pushMatrix();
-    // this.flower.setPosition(0,0);
-    // this.flower.display();
-    // this.popMatrix();
+    this.pushMatrix();
+    this.flower.setPosition(0,0);
+    this.flower.display();
+    this.popMatrix();
 
     // this.pushMatrix();
     // this.appearance.apply();
@@ -167,6 +179,12 @@ export class MyScene extends CGFscene {
     // this.rockSet.display();
     // this.popMatrix();
 
+    this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA)
+    this.gl.enable(this.gl.BLEND)
+
+    this.pushMatrix(); 
+    this.hive
+
     // this.pushMatrix(); 
     // this.scale(5,5,5);
     // const currentTime = Date.now();
@@ -177,13 +195,13 @@ export class MyScene extends CGFscene {
 
     
     // this.pushMatrix();
-    // this.translate(0,-100,0);
+    // this.translate(0,-200,0);
     // this.garden.display();
     // this.popMatrix();
 
-    this.pushMatrix(); 
-    this.stem.display();
-    this.popMatrix();
+    // this.pushMatrix(); 
+    // this.stem.display();
+    // this.popMatrix();
  
 
     if(this.displayPanoram) {
@@ -201,9 +219,8 @@ export class MyScene extends CGFscene {
     }
     // ---- END Primitive drawing section
   }
-  update(time) 
-  {
+  update(time) {
     this.checkKeys();
-
   }
+    
 }

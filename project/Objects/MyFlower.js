@@ -1,7 +1,8 @@
-import {CGFappearance, CGFobject} from '../../lib/CGF.js';
+import {CGFappearance, CGFobject, CGFtexture} from '../../lib/CGF.js';
 import { MySteam } from './MySteam.js';
 import { MyReceptacle } from './MyReceptacle.js';
 import { MyPetal } from './MyPetal.js';
+import { MyPollen } from './MyPollen.js';
 
 
 /**
@@ -14,31 +15,26 @@ export class MyFlower extends CGFobject {
 		super(scene); 
 		this.petals= [];
 		let totalSize = this.createSteam();
-
+		this.petaltextures = ["/project/images/petalPink.jpg"]
+		this.pollen = new MyPollen(this.scene);
 		this.createReceptacle(totalSize);
 		//layer 1
 		this.createPetals();
-		
-
 	}
-
 	setPosition(x, y) {
         this.x = x;
         this.y = y;
     }
 
 	createPetals() {
-		this.numbPetals = Math.trunc(Math.random() * 10) + 6;
+		this.numbPetals = Math.trunc(Math.random() * 5) + 6;
 		let angleIncrement = 360 / this.numbPetals; 
 	
 		// Create two layers of petals
 		for (let layer = 0; layer < 2; layer++) {
 			let next = Math.random() * angleIncrement; 
 			for (let i = 0; i < this.numbPetals; i++){
-				let random = Math.random();
-				let random2 = Math.random();
-				let random3 = Math.random();
-				let curPetal = new MyPetal(this.scene, random*30/(layer+1), random, random2, random3);
+				let curPetal = new MyPetal(this.scene, Math.random()*30/(layer+1));
 				curPetal.setAngle(next);
 				this.petals.push(curPetal);
 				next += angleIncrement;
@@ -105,41 +101,44 @@ export class MyFlower extends CGFobject {
 	}
 
 	display() {
-		let finalPos = []; 
 		this.scene.pushMatrix();
 		this.scene.translate(this.x, 0, this.y);
+	
+		// Stem
 		this.scene.pushMatrix();
 		this.scene.rotate(-90 * Math.PI / 180, 1, 0, 0);
-		finalPos = this.steam.display();
+		const finalPos = this.steam.display();
+		this.scene.popMatrix(); 
+	
+		// Receptacle and Petals
 		this.scene.pushMatrix();
-		this.scene.translate(finalPos[0],0,finalPos[1]);
+		this.scene.translate(finalPos[0], 0, finalPos[1]);
+	
+		// Receptacle (first)
 		this.scene.pushMatrix();
-		this.scene.rotate(90 * Math.PI / 180, 1,0,0);
-		this.scene.pushMatrix();
+		this.scene.rotate(90 * Math.PI / 180, 1, 0, 0);
 		this.scene.rotate(-finalPos[2] * Math.PI / 180, 0, 0, 1);
+		this.receptacle.display(finalPos); 
+		this.pollen.display();
+		this.scene.popMatrix(); 
+	
+		// Receptacle (flipped)
+		this.scene.pushMatrix();
+		this.scene.rotate(90 * Math.PI / 180, 1, 0, 0);
+		this.scene.rotate(-finalPos[2] * Math.PI / 180, 0, 0, 1); 
+		this.scene.scale(1, -1, -1);
 		this.receptacle.display(finalPos);
 		this.scene.popMatrix();
-		this.scene.pushMatrix();
-		this.scene.scale(1,-1,-1);
-		this.scene.rotate(finalPos[2] * Math.PI / 180, 0, 0, 1); 
-		this.receptacle.display(finalPos);
-		this.scene.popMatrix();
-		this.scene.popMatrix();
-		this.scene.popMatrix();
-		this.scene.pushMatrix();
-		this.scene.pushMatrix();
-		this.scene.translate(finalPos[0], 0, finalPos[1]); 
+	
+		// Petals
 		this.scene.rotate(finalPos[2] * Math.PI / 180, 0, 1, 0);
 		this.displayPetals();
-		this.scene.popMatrix();
-		this.scene.popMatrix();
-		this.scene.popMatrix();
-		this.scene.popMatrix();
-		this.scene.popMatrix();
-		this.scene.popMatrix();
-		
+	
+		this.scene.popMatrix(); 
+		this.scene.popMatrix(); 
 	}
-
+	
+	
 	enableNormalViz(){
         this.steam.enableNormalViz();
 		this.receptacle.enableNormalViz();

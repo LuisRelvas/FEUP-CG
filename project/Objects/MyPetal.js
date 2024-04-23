@@ -1,4 +1,4 @@
-import {CGFappearance, CGFobject} from '../../lib/CGF.js';
+import {CGFappearance, CGFobject, CGFtexture} from '../../lib/CGF.js';
 import { MyTriangle } from '../GeometricFigures/MyTriangle.js';
 
 
@@ -8,15 +8,16 @@ import { MyTriangle } from '../GeometricFigures/MyTriangle.js';
  * @param scene - Reference to MyScene object
  */
 export class MyPetal extends CGFobject {
-	constructor(scene, petalTriangleRotation, r,g,b) {
+	constructor(scene, petalTriangleRotation) {
 		super(scene); 
         this.petalTriangleRotation = petalTriangleRotation;
 		this.triangle1 = new MyTriangle(this.scene);	
 		this.triangle2 = new MyTriangle(this.scene);	
-        this.r = r;
-        this.g = g;
-        this.b = b;
 		this.initialMaterials();
+
+        // Set texture coordinates for each triangle
+        this.triangle1.setTexCoords();
+        this.triangle2.setTexCoords();
 
 	};
 
@@ -31,10 +32,9 @@ export class MyPetal extends CGFobject {
     //Math.random [0,1[*angle
     initialMaterials(){
         this.petalMaterial = new CGFappearance(this.scene);
-		this.petalMaterial.setAmbient(1,1, 1, 1);
-		this.petalMaterial.setDiffuse(this.r, this.g, this.b, 1);
-		this.petalMaterial.setSpecular(this.r, this.g, this.b, 1);
-		this.petalMaterial.setShininess(10.0);
+		this.petalTexture = new CGFtexture(this.scene, "/project/images/petalPink.jpg");
+		this.petalMaterial.setTexture(this.petalTexture);
+		this.petalMaterial.setTextureWrap('REPEAT', 'REPEAT');
     };
 
     display(){

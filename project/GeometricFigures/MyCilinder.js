@@ -1,9 +1,5 @@
 import { CGFobject } from '../../lib/CGF.js';
-/**
- * MyCylinder
- * @constructor
- * @param scene - Reference to MyScene object
- */
+
 export class MyCilinder extends CGFobject {
     constructor(scene, slices, stacks, radius) {
         super(scene);
@@ -17,20 +13,24 @@ export class MyCilinder extends CGFobject {
         this.vertices = [];
         this.indices = [];
         this.normals = [];
+        this.texCoords = [];
     
         this.addVerticesAndNormalsForStacks();
         this.calculateVerticesNormalsAndIndicesForSlices();
     
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
+        this.updateTexCoordsGLBuffers();
     }
     
     addVerticesAndNormalsForStacks() {
         for (let z = 0; z <= this.stacks; z += 1) {
             this.vertices.push(this.radius, 0, z / this.stacks);
             this.normals.push(1, 0, 0);
+            this.texCoords.push(0, z / this.stacks);
         }
     }
+    
     
     calculateVerticesNormalsAndIndicesForSlices() {
         for (let i = 1; i <= this.slices; i++) {
@@ -39,6 +39,7 @@ export class MyCilinder extends CGFobject {
             if (i != this.slices) {    
                 this.vertices.push(x, y, 0);
                 this.normals.push(x / vector_size, y / vector_size, 0);
+                this.texCoords.push(i / this.slices, 0);
             }
     
             this.calculateVerticesNormalsAndIndicesForStacks(i, x, y, vector_size);
@@ -68,6 +69,7 @@ export class MyCilinder extends CGFobject {
         let z = j / this.stacks;
         this.vertices.push(x, y, z);
         this.normals.push(x / vector_size, y / vector_size, 0);
+        this.texCoords.push(j / this.stacks, z);
     }
     
     addIndices(j) {
@@ -87,7 +89,6 @@ export class MyCilinder extends CGFobject {
         let indexA = indexB - 1;
         this.indices.push(indexA, indexC, indexD, indexA, indexD, indexB);
     }
-
 
     updateBuffers(complexity) {
     }

@@ -1,4 +1,4 @@
-import {CGFappearance, CGFobject} from '../../lib/CGF.js';
+import {CGFappearance, CGFobject, CGFtexture } from '../../lib/CGF.js';
 import { MyCilinder } from '../GeometricFigures/MyCilinder.js';
 import { MyTriangle } from '../GeometricFigures/MyTriangle.js';
 
@@ -23,8 +23,11 @@ export class MySteam extends CGFobject {
 		this.sideSteam = new MyCilinder(this.scene, 16, 8, 0.1);
 		this.petal = new MyTriangle(this.scene);
 		this.petal2 = new MyTriangle(this.scene);
+		this.textures = ["/project/images/texture_stem_2.jpg", "/project/images/texture_stem_3.jpg", "/project/images/texture_stem_4.jpg"];
 		this.createCilinders();
 		this.initialMaterials();
+		this.petal.setTexCoords();
+        this.petal2.setTexCoords();
 
 	}
 
@@ -50,10 +53,13 @@ export class MySteam extends CGFobject {
 	initialMaterials() 
 	{
 		this.steamMaterial = new CGFappearance(this.scene);
-		this.steamMaterial.setAmbient(0.3, 0.3, 0.3, 1);
-		this.steamMaterial.setDiffuse(this.r, this.g, this.b, 1);
-		this.steamMaterial.setSpecular(this.r, this.g, this.b, 1);
-		this.steamMaterial.setShininess(10.0);
+		this.steamTexture = new CGFtexture(this.scene, this.textures[Math.round(Math.random() * 2)]);
+		this.steamMaterial.setTexture(this.steamTexture);
+		this.steamMaterial.setTextureWrap('REPEAT', 'REPEAT');
+		this.leavesMaterial = new CGFappearance(this.scene);
+		this.leavesTexture = new CGFtexture(this.scene, "/project/images/leaves_1.jpg");
+		this.leavesMaterial.setTexture(this.leavesTexture);
+		this.leavesMaterial.setTextureWrap('REPEAT', 'REPEAT');
 	};
 
 	
@@ -68,7 +74,6 @@ export class MySteam extends CGFobject {
 			this.scene.pushMatrix();
 	
 			let curCil = this.cilinders[i];
-			this.steamMaterial.apply();
 	
 			this.scene.pushMatrix();
 	
@@ -77,6 +82,8 @@ export class MySteam extends CGFobject {
 			this.scene.rotate(this.cilindersInclination[i] * Math.PI/180, 0, 1, 0);
 	
 			this.scene.scale(1, 1, this.cilinderSizesArray[i] * 1.025);
+
+			this.steamMaterial.apply();
 	
 			curCil.display();
 	
@@ -92,6 +99,7 @@ export class MySteam extends CGFobject {
 				this.scene.translate(lastPosX, lastPosY, lastPosZ);
 				this.scene.rotate(-45 * Math.PI/180, 0, 1, 0);
 				this.scene.scale(1, 1, 1);
+				this.steamTexture.bind();
 				this.sideSteam.display();
 				this.scene.popMatrix();
 				this.scene.pushMatrix();
@@ -100,7 +108,9 @@ export class MySteam extends CGFobject {
 				this.scene.rotate(-45 * Math.PI / 180, 0, 1, 0);
 				this.scene.rotate(-90 * Math.PI / 180, 1, 0 ,0);
 				this.scene.rotate(90 * Math.PI / 180 , 0, 1, 0);
-				this.scene.scale(0.5,1,0.1)
+				this.scene.scale(0.5,0.5,0.1);
+				this.leavesMaterial.apply();
+				this.leavesTexture.bind();
 				this.petal.display();
 				this.scene.popMatrix();
 				this.scene.pushMatrix();
@@ -110,7 +120,9 @@ export class MySteam extends CGFobject {
 				this.scene.rotate(90 * Math.PI / 180, 1,0,0);
 				this.scene.rotate(90 * Math.PI / 180 , 0, 1, 0);
 				this.scene.rotate(-10 * Math.PI / 180 , 1, 0, 0); 
-				this.scene.scale(0.5,1,0.1)
+				this.scene.scale(0.5,0.5,0.1);
+				this.leavesMaterial.apply();
+				this.leavesTexture.bind();
 				this.petal2.display();
 				this.scene.popMatrix();
 			}
