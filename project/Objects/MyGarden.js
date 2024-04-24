@@ -17,15 +17,15 @@ export class MyGarden extends CGFobject{
         let totalSize = spacing * (this.rows - 1); // Total size of the garden
         for (let i = 0; i < this.rows; i++) {
             for (let j = 0; j < this.cols; j++) {
-                let flower = new MyFlower(this.scene);
+                this.flower = new MyFlower(this.scene);
                 let offsetX = Math.random() * (spacing / 2);  
                 let offsetY = Math.random() * (spacing / 2);  
                 // Subtract half of the total size from each position to center the garden
                 let posX = i * spacing - totalSize / 2 + offsetX;
                 let posY = j * spacing - totalSize / 2 + offsetY;
-                flower.setPosition(posX, posY);
-                this.flowers.push(flower);
-                this.flowerPositions.push([posX, posY,-20]);
+                this.flower.setPosition(posX, posY);
+                this.flowers.push(this.flower);
+                this.flowerPositions.push([posX, posY,this.flower.totalSize]);
             }
         }
     }

@@ -13,6 +13,7 @@ export class MyBee extends CGFobject {
         this.y = y; 
         this.z = z;
         this.pollenPos = []; 
+        this.initialPollenPositionsCalculated = false;
         this.animation = true; 
         this.head = new MySphere(this.scene, 32, 16, false, 0.1); 
         this.body = new MySphere(this.scene, 32, 16, false, 0.1);
@@ -20,33 +21,60 @@ export class MyBee extends CGFobject {
         this.legs = new MyCilinder(this.scene, 32, 16, 0.01);
         this.paw = new MySphere(this.scene, 32, 16, false, 0.1);
         this.sting = new MyCone(this.scene, 32, 16, 0.01, 0.5);
-        this.pollen = new MyPollen(this.scene,1,-10,1);
+        this.pollen = new MyPollen(this.scene);
+        this.pollenHold = new MyPollen(this.scene);
         this.time = 0; 
         this.timeWings = 10;
         this.orientation = 0; 
         this.speed = 0; 
         this.transport = false; 
+        this.pollenHold = [];  
         this.scene.pushMatrix();
         this.scene.popMatrix();
         this.initMaterials(); 
     }
 
-    displayPolen(posFlowers) 
-    {
-        let yOffset = 0.1; 
-        let posPollen = []; 
-        for(let i = 0; i < posFlowers.length; i++) 
-        {
+    calculateInitialPolenPositions(posFlowers) {
+        if (!this.initialPollenPositionsCalculated) {
+            let yOffset = 0.1; 
+            this.pollenPos = [];
+            for(let i = 0; i < posFlowers.length; i++) {
+                this.pollenPos.push([posFlowers[i][0], posFlowers[i][2], posFlowers[i][1]]);
+            }
+            this.initialPollenPositionsCalculated = true;
+        }
+        return this.pollenPos;
+    }
 
+    displayPolen() {
+        for(let i = 0; i < this.pollenPos.length; i++) {
             this.scene.pushMatrix();
-            this.scene.rotate(90 * Math.PI / 180, 1, 0, 0);
-            //this.scene.translate(0,0,14);
-            posPollen.push(this.pollen.display(posFlowers[i][0], posFlowers[i][1], 0));
-            this.pollen.display(posFlowers[i][0], posFlowers[i][1], 0);
+            if(this.transport) {
+                this.pollen.display(this.pollenPos[i][0], this.pollenPos[i][1], this.pollenPos[i][2]);
+            } else {
+                this.pollen.display(this.pollenPos[i][0], this.pollenPos[i][1], this.pollenPos[i][2]);
+            }
             this.scene.popMatrix();
         }
-        return posPollen;
     }
+
+    handle(pollen) {
+        let distance = Math.sqrt(Math.pow(this.x - pollen[0], 2) + Math.pow(this.y - pollen[1], 2) + Math.pow(this.z - pollen[2], 2));
+        console.log("Distance: " + distance);
+        console.log("Pollen: " + pollen);
+        console.log("PollenPos: " + this.pollenPos);
+            if (distance < 1.1) { 
+                this.transport = true;
+                this.pollenPos = this.pollenPos.filter(pos => 
+                    Math.abs(pos[0] - pollen[0]) >= 0.0001 ||
+                    Math.abs(pos[1] - pollen[1]) >= 0.0001 ||
+                    Math.abs(pos[2] - pollen[2]) >= 0.0001
+                );
+                console.log("PollenPos after modification: " + this.pollenPos);
+                let newPollen = new MyPollen(this.scene); 
+                this.pollenHold = newPollen;
+        }
+}
 
     initMaterials() 
     {
@@ -63,8 +91,10 @@ export class MyBee extends CGFobject {
         this.headMaterial.setTexture(this.headTexture);
         this.headMaterial.setTextureWrap('REPEAT', 'REPEAT');
         this.wingMaterial = new CGFappearance(this.scene);
-        this.wingMaterial.setDiffuse(0.8, 0.8, 0.8, 0.5); 
-        this.wingMaterial.setSpecular(0.8, 0.8, 0.8, 0.5);
+        this.wingMaterial.setAmbient(1.0, 1.0, 1.0, 0.1)
+        this.wingMaterial.setDiffuse(1.0, 1., 1.0, 0.1); 
+        this.wingMaterial.setSpecular(1.0, 1.0, 1.0, 0.1);
+        this.wingMaterial.setEmission(0,0,0,0);
         this.wingMaterial.setShininess(10.0);
     }
 
@@ -79,16 +109,20 @@ export class MyBee extends CGFobject {
     }
 
     update(t) 
+{
+    if(this.animation) 
     {
-        if(this.animation) 
-        {
         this.time = Math.PI * (t/ 1000);
-        }
-        else 
-        {
-            this.time = 0;
-        }
     }
+    if(this.animation && this.transport) 
+    {
+        this.time = Math.PI * (t/ 1000);
+    }
+    else 
+    {
+        this.time = 0;
+    }
+}
 
     updateWings(t) {
         if(this.animation)
@@ -101,10 +135,14 @@ export class MyBee extends CGFobject {
         }
     }
 
+    
     move() 
     {
         this.scene.pushMatrix();
         this.scene.translate(this.x, this.y, this.z);
+        if (this.transport) {
+            this.pollen.display(this.pollenPos[0], this.pollenPos[1], this.pollenPos[2]);
+        }
         console.log("position of the bee: " + this.x + " " + this.y + " " + this.z);
         this.scene.rotate(this.orientation,0,1,0);
         this.display();
@@ -126,10 +164,6 @@ export class MyBee extends CGFobject {
     display() 
     {
         
-        if(this.transport) 
-        {
-            this.displayPolen();
-        }
         this.scene.pushMatrix(); 
         this.scene.translate(0, Math.sin(this.time), 0);
         // Head
@@ -239,6 +273,11 @@ export class MyBee extends CGFobject {
         this.scene.rotate(90 * Math.PI / 180 , 0,0,1);
         this.sting.display();
         this.scene.popMatrix();
+
+        if(this.transport) 
+        {
+            this.pollenHold.display(0, -0.3, 0);
+        }
 
         this.scene.gl.enable(this.scene.gl.BLEND);
         this.scene.gl.blendFunc(this.scene.gl.SRC_ALPHA, this.scene.gl.ONE_MINUS_SRC_ALPHA);    

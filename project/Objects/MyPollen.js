@@ -2,11 +2,8 @@ import {CGFappearance, CGFobject, CGFtexture} from '../../lib/CGF.js';
 import { MySphere } from '../GeometricFigures/MySphere.js';
 
 export class MyPollen extends CGFobject{
-    constructor(scene,x,y,z) {
+    constructor(scene) {
         super(scene); 
-        this.x = x; 
-        this.y = y; 
-        this.z = z; 
         this.initMaterials();
         this.sphere = new MySphere(this.scene, 32, 16, false, 0.1);
     }
@@ -20,15 +17,14 @@ export class MyPollen extends CGFobject{
         this.pollenMaterial.setShininess(10.0);
     }
     
-    display(posX,posY) 
+    display(posX,posY,posZ) 
     {
         this.scene.pushMatrix();
         this.pollenMaterial.apply();
-        this.scene.translate(posX,posY,0);
-        this.scene.scale(1,1,0.8)
+        this.scene.translate(posX,posY,posZ);
         this.sphere.display();
         this.scene.popMatrix();
-        return [this.x,this.y,this.z];
+        return [posX,posY,posZ];
 
     }
 }

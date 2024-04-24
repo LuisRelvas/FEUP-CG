@@ -15,9 +15,9 @@ export class MyFlower extends CGFobject {
 		super(scene); 
 		this.petals= [];
 		this.pollen = new MyPollen(this.scene);
-		let totalSize = this.createSteam();
+		this.totalSize = this.createSteam();
 		this.petaltextures = ["/project/images/petalPink.jpg"]
-		this.createReceptacle(totalSize);
+		this.createReceptacle(this.totalSize);
 		//layer 1
 		this.createPetals();
 	}
