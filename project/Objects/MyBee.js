@@ -15,6 +15,7 @@ export class MyBee extends CGFobject {
         this.pollenPos = []; 
         this.initialPollenPositionsCalculated = false;
         this.animation = true; 
+        this.targetPos = null; 
         this.head = new MySphere(this.scene, 32, 16, false, 0.1); 
         this.body = new MySphere(this.scene, 32, 16, false, 0.1);
         this.wing = new MySphere(this.scene, 32, 16, false, 0.1);
@@ -110,11 +111,28 @@ export class MyBee extends CGFobject {
 
     update(t) 
 {
+    if(this.targetPos) 
+    {
+        let speed = 0.01; 
+        this.x += (this.targetPos[0] - this.x) * speed;
+        this.y += (this.targetPos[1] - this.y) * speed;
+        this.z += (this.targetPos[2] - this.z) * speed;
+
+        // If the bee is close enough to the target position
+        if(Math.abs(this.x - this.targetPos[0]) < 0.1 && Math.abs(this.y - this.targetPos[1]) < 0.1 && Math.abs(this.z - this.targetPos[2]) < 0.1) 
+        {
+            this.transport = false;
+            this.pollenHold = null; 
+            this.pollenPos.push([0,0,0]); 
+            this.targetPos = null;
+        }
+    }
+
     if(this.animation) 
     {
         this.time = Math.PI * (t/ 1000);
     }
-    if(this.animation && this.transport) 
+    else if(this.animation && this.transport) 
     {
         this.time = Math.PI * (t/ 1000);
     }

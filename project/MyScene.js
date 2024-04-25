@@ -169,6 +169,13 @@ export class MyScene extends CGFscene {
 
       }         
     }
+    if(this.gui.isKeyPressed("KeyO"))
+    {
+      if(this.bee.transport) 
+      {
+        this.bee.targetPos= [0,0,0];
+      }
+    }
     if (keysPressed) {
       console.log(text);
     }
