@@ -123,8 +123,8 @@ export class MyBee extends CGFobject {
         {
             this.transport = false;
             this.pollenHold = null; 
-            this.pollenPos.push([0,0,0]); 
             this.targetPos = null;
+            this.pollenPos.push([this.x, this.y, this.z])
         }
     }
 

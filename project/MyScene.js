@@ -48,7 +48,7 @@ export class MyScene extends CGFscene {
     this.garden = new MyGarden(this, 2, 2);
     this.rock = new MyRock(this, 1, 32, 16); 
     this.rockSet = new MyRockSet(this, 10, 32, 16);
-    this.bee = new MyBee(this,0,0,0);
+    this.bee = new MyBee(this,0,10,0);
     this.stem = new MySteam(this, 0.1, 0.1, 0.1, 10, [1, 1, 1, 1, 1]);
     this.hive = new MyHive(this,0,0);
     this.pollenPos = []; 
@@ -75,26 +75,18 @@ export class MyScene extends CGFscene {
     for (let i = 0; i < this.posFlowers.length; i++) {
       console.log("The value of the polen are " + this.bee.pollenPos[i]);
         let flowerX = this.posFlowers[i][0];
-        let flowerY = this.posFlowers[i][2];
         let flowerZ = this.posFlowers[i][1]; 
+        let flowerY = this.posFlowers[i][2];
 
         let distance = Math.sqrt(
             Math.pow(this.bee.x - flowerX, 2) + 
-            Math.pow(this.bee.y - flowerY, 2) + 
             Math.pow(this.bee.z - flowerZ, 2) 
         );
 
 
-        if (distance < 7) { 
-          this.bee.x = flowerX; 
-          this.bee.y = flowerY; 
-          this.bee.z = flowerZ; 
-          let newPollen = new MyPollen(this, this.bee.x, this.bee.y, this.bee.z);
-          newPollen.display();
-          this.pollenPos[i][0] = this.bee.x; 
-          this.pollenPos[i][1] = this.bee.y;
-          this.pollenPos[i][2] = this.bee.z;
-          this.pollenPos[i][1] = this.bee.y + 1;
+        if (distance < 1.1) { 
+          this.bee.targetPos = [flowerX,flowerY,flowerZ];
+          this.bee.animation = false; 
       }
     }
 }
@@ -161,6 +153,7 @@ export class MyScene extends CGFscene {
         console.log("the value of the distance is " + distance);
         if(distance < 1.1) 
         {
+          this.bee.targetPos = [this.bee.x, this.bee.y + 2, this.bee.z];
           console.log("The bee is close to the polen");
           console.log("The value of the polenPos is " + this.pollenPos[i]);
           this.bee.animation = true; 
@@ -173,7 +166,7 @@ export class MyScene extends CGFscene {
     {
       if(this.bee.transport) 
       {
-        this.bee.targetPos= [0,0,0];
+        this.bee.targetPos = [0,0,0];
       }
     }
     if (keysPressed) {
