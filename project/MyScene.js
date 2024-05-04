@@ -41,6 +41,7 @@ export class MyScene extends CGFscene {
     this.gl.depthFunc(this.gl.LEQUAL);
 
     //Initialize scene objects
+    this.time = null; 
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this,30);
     this.sphere = new MySphere(this,32,16,0.1);
@@ -60,7 +61,7 @@ export class MyScene extends CGFscene {
     this.scaleFactor = 1;
     this.displaySphere = true; 
     this.displayPanoram = true;
-    this.speedFactor = 1;
+    this.speedFactor = 0;
     this.scaleFactor = 1; 
 
     this.enableTextures(true);
@@ -80,14 +81,16 @@ export class MyScene extends CGFscene {
 
         let distance = Math.sqrt(
             Math.pow(this.bee.x - flowerX, 2) + 
-            Math.pow(this.bee.z - flowerZ, 2) 
+            Math.pow(this.bee.z - flowerZ, 2) +
+            Math.pow(this.bee.y - flowerY, 2)
         );
+        console.log("the distance is " + distance);
 
 
-        if (distance < 1.1) { 
-          this.bee.targetPos = [flowerX,flowerY,flowerZ];
+        if (distance < 2) { 
           this.bee.animation = false; 
-      }
+          this.bee.targetPos = [flowerX, flowerY + 0.5, flowerZ]
+        }
     }
 }
 
@@ -104,36 +107,42 @@ export class MyScene extends CGFscene {
     }
     if (this.gui.isKeyPressed("KeyW")) {
       text += " W ";
-      this.bee.x += Math.cos(this.bee.orientation) * 0.01 * this.speedFactor;
-      this.bee.z += Math.sin(-this.bee.orientation) * 0.01 * this.speedFactor;
+      this.speedFactor += 0.01; 
+      this.bee.moving = true; 
       keysPressed = true;
     }
     if (this.gui.isKeyPressed("KeyA")) {
       text+=" A ";
-      this.bee.orientation += 0.1 * this.scaleFactor; 
+      this.bee.orientation += 0.1; 
       keysPressed = true;
     }
     if (this.gui.isKeyPressed("KeyS")) {
       text+=" S "; 
-      this.bee.x -= Math.cos(this.bee.orientation) * 0.01 * this.speedFactor;
-      this.bee.z -= Math.sin(-this.bee.orientation) * 0.01 * this.speedFactor;
+      //this.bee.slow = true; 
+      if(this.speedFactor > 0)
+        {
+          this.speedFactor -= 0.01;
+        }
       keysPressed = true;
     }
     if (this.gui.isKeyPressed("KeyD")) {
-      this.bee.orientation -= 0.1 * this.scaleFactor; 
+      this.bee.orientation -= 0.1; 
       text+=" D "; 
       keysPressed = true;
     }
     if(this.gui.isKeyPressed("KeyF"))
     {
-        this.bee.y -= 0.01;
         text+=" F ";
+        this.bee.down = true; 
+        this.bee.up = false;
         keysPressed = true;
-        this.checkRadius();
     }
     if(this.gui.isKeyPressed("KeyP"))
     {
       text+=" P "; 
+      this.bee.down = false;
+      this.bee.moving = true; 
+      this.bee.up = true;  
       //check if the position of the bee is close to a polen
       let pollenX = 0; 
       let pollenY = 0; 
@@ -150,13 +159,13 @@ export class MyScene extends CGFscene {
           Math.pow(this.bee.y - pollenY, 2) + 
           Math.pow(this.bee.z - pollenZ, 2)
         );
-        console.log("the value of the distance is " + distance);
+        console.log("the value of the distance to the polen is " + distance);
         if(distance < 1.1) 
         {
-          this.bee.targetPos = [this.bee.x, this.bee.y + 2, this.bee.z];
           console.log("The bee is close to the polen");
           console.log("The value of the polenPos is " + this.pollenPos[i]);
           this.bee.animation = true; 
+          this.bee.transport = true;
           this.bee.handle(this.pollenPos[i]);
         }
 
@@ -241,7 +250,7 @@ export class MyScene extends CGFscene {
     // this.popMatrix();
 
     // this.pushMatrix();
-    // this.translate(0,-199,0);
+    // this.translate(0,0,0);
     // this.rockTexture.bind();
     // this.rockSet.display();
     // this.popMatrix();
@@ -257,11 +266,10 @@ export class MyScene extends CGFscene {
    
 
     this.pushMatrix(); 
-    this.scale(1,1,1);
     const currentTime = Date.now();
     this.bee.update(currentTime);
     this.bee.updateWings(currentTime);
-    this.bee.move();
+    this.bee.move(this.scaleFactor);
     this.popMatrix();
 
     
@@ -300,6 +308,31 @@ export class MyScene extends CGFscene {
   }
   update(time) {
     this.checkKeys();
+    if(!this.bee.animation)
+    { 
+    }
+    else if(this.bee.targetPos != null) 
+    {
+
+    }
+    else 
+    {
+      if(this.bee.moving) 
+      {
+        this.bee.x += Math.cos(this.bee.orientation) * this.speedFactor;
+        this.bee.z += Math.sin(-this.bee.orientation) * this.speedFactor;
+      }
+      if(this.bee.moving && this.bee.down) 
+      {
+        this.bee.y -= 0.1;
+        this.checkRadius();
+      }
+      if(this.bee.moving && this.bee.up) 
+      {
+        this.bee.y += 0.1;
+      }
+    }
+    
   }
     
 }

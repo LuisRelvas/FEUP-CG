@@ -29,6 +29,11 @@ export class MyBee extends CGFobject {
         this.orientation = 0; 
         this.speed = 0; 
         this.transport = false; 
+        this.moving = false; 
+        this.down = false; 
+        this.up = false; 
+        this.slow = false; 
+        this.stop = false; 
         this.pollenHold = [];  
         this.scene.pushMatrix();
         this.scene.popMatrix();
@@ -64,7 +69,7 @@ export class MyBee extends CGFobject {
         console.log("Distance: " + distance);
         console.log("Pollen: " + pollen);
         console.log("PollenPos: " + this.pollenPos);
-            if (distance < 1.1) { 
+            if (distance < 2) { 
                 this.transport = true;
                 this.pollenPos = this.pollenPos.filter(pos => 
                     Math.abs(pos[0] - pollen[0]) >= 0.0001 ||
@@ -93,7 +98,7 @@ export class MyBee extends CGFobject {
         this.headMaterial.setTextureWrap('REPEAT', 'REPEAT');
         this.wingMaterial = new CGFappearance(this.scene);
         this.wingMaterial.setAmbient(1.0, 1.0, 1.0, 0.1)
-        this.wingMaterial.setDiffuse(1.0, 1., 1.0, 0.1); 
+        this.wingMaterial.setDiffuse(1.0, 1., 1.0, 0.1);    
         this.wingMaterial.setSpecular(1.0, 1.0, 1.0, 0.1);
         this.wingMaterial.setEmission(0,0,0,0);
         this.wingMaterial.setShininess(10.0);
@@ -117,14 +122,16 @@ export class MyBee extends CGFobject {
         this.x += (this.targetPos[0] - this.x) * speed;
         this.y += (this.targetPos[1] - this.y) * speed;
         this.z += (this.targetPos[2] - this.z) * speed;
+        console.log("target Pos " + this.targetPos);
 
         // If the bee is close enough to the target position
         if(Math.abs(this.x - this.targetPos[0]) < 0.1 && Math.abs(this.y - this.targetPos[1]) < 0.1 && Math.abs(this.z - this.targetPos[2]) < 0.1) 
         {
+            console.log("entered in the loop");     
             this.transport = false;
             this.pollenHold = null; 
             this.targetPos = null;
-            this.pollenPos.push([this.x, this.y, this.z])
+            //this.pollenPos.push([this.x, this.y, this.z])
         }
     }
 
@@ -153,8 +160,15 @@ export class MyBee extends CGFobject {
         }
     }
 
+    accelerate(v) {
+        this.speed += v * 0.1 * this.scene.speedFactor; 
+        if(this.speed <= 0) {
+          this.speed = 0;
+        }
+      }
+
     
-    move() 
+    move(scaleFactor) 
     {
         this.scene.pushMatrix();
         this.scene.translate(this.x, this.y, this.z);
@@ -163,7 +177,7 @@ export class MyBee extends CGFobject {
         }
         console.log("position of the bee: " + this.x + " " + this.y + " " + this.z);
         this.scene.rotate(this.orientation,0,1,0);
-        this.display();
+        this.display(scaleFactor);
         this.scene.popMatrix();
     }
 
@@ -179,11 +193,12 @@ export class MyBee extends CGFobject {
     }
     
 
-    display() 
+    display(scaleFactor) 
     {
         
         this.scene.pushMatrix(); 
         this.scene.translate(0, Math.sin(this.time), 0);
+        this.scene.scale(scaleFactor, scaleFactor, scaleFactor);
         // Head
         this.scene.pushMatrix();
         this.headMaterial.apply();
