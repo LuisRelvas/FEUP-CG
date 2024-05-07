@@ -130,7 +130,7 @@ export class MyBee extends CGFobject {
     update(t) 
     {
         let time = t / 1000; 
-        let delta = 2 / 60; 
+        let delta = time / 100; 
         if(this.targetPos) 
         {
             let speed = 0.01; 
@@ -175,14 +175,12 @@ export class MyBee extends CGFobject {
         }
         else 
         {
-            if(t % 1000 < 500) 
-                {
-                    this.y -= delta; 
-                }
-            else if(t % 1000 > 500 && t % 1000 < 1000) 
-                {
-                    this.y += delta; 
-                }
+            if(t % 1000 < 500) {
+                this.y -= delta; 
+            }
+            else {
+                this.y += delta; 
+            }
         }
         this.time = time;
     }
@@ -190,7 +188,7 @@ export class MyBee extends CGFobject {
     updateWings(t) {
         if(this.animation)
         {
-        this.timeWings = Math.abs(Math.PI * (t/ 1000)); 
+            this.timeWings = Math.abs(Math.PI * (t/ 1000)); 
         }
         else 
         {
