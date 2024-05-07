@@ -1,5 +1,6 @@
 import { CGFobject } from '../../lib/CGF.js';
 import { MyFlower }  from './MyFlower.js';
+import { MyGrass } from './MyGrass.js';
 
 export class MyGarden extends CGFobject{
     constructor(scene, rows, cols) {
@@ -7,9 +8,24 @@ export class MyGarden extends CGFobject{
         this.rows = rows;
         this.cols = cols;
         this.flowers = [];
+        this.grass = []; 
         this.flowerPositions = [];
-
         this.createFlowers();
+        //this.createGrass(); 
+    }
+
+    createGrass() {
+        let spacing = 1; 
+        for (let i = 0; i < 1; i++) {
+            for (let j = 0; j < 1; j++) {
+                let size = 0.8 + Math.random() * 0.4; // Random size between 0.8 and 1.2
+                let angle = Math.random() * Math.PI / 4 - Math.PI / 8; // Random angle between -PI/8 and PI/8
+                let x = i * spacing + Math.random() * 0.2 - 0.1; // Random x position within 0.1 units of the grid
+                let z = j * spacing + Math.random() * 0.2 - 0.1; // Random z position within 0.1 units of the grid
+                let grassBlade = new MyGrass(this.scene, x, 0, z, size, angle);
+                this.grass.push(grassBlade);
+            }
+        }
     }
 
     createFlowers() {
@@ -31,10 +47,15 @@ export class MyGarden extends CGFobject{
     }
 
     display() {
+    
         for (let flower of this.flowers) {
             flower.display();
         }
-        return this.flowerPositions; 
+        for (let grassBlade of this.grass) {
+            grassBlade.display();
+        }
 
+        return this.flowerPositions; 
     }
+
 }

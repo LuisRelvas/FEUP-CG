@@ -8,6 +8,11 @@ export class MyTriangle extends CGFobject {
 	constructor(scene) {
 		super(scene);
 		this.initBuffers();
+		this.randomScaleY = 1;
+		this.randomScaleX = 1;  
+		this.randomRotation = 0;
+		this.randomTranslation = 0;
+		this.triangleNumber = 0;
 	}
 	
 	initBuffers() {

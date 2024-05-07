@@ -33,6 +33,8 @@ export class MyInterface extends CGFinterface {
 
         this.gui.add(this.scene, 'scaleFactor', 0.5, 3).name('Turn Factor');
 
+        this.gui.add(this.scene, 'windFactor', 0, 1).name('Wind Factor');   
+
         this.initKeys();
     }
     initKeys() 

@@ -24,20 +24,37 @@ export class MyBee extends CGFobject {
         this.sting = new MyCone(this.scene, 32, 16, 0.01, 0.5);
         this.pollen = new MyPollen(this.scene);
         this.pollenHold = new MyPollen(this.scene);
-        this.time = 0; 
-        this.timeWings = 10;
         this.orientation = 0; 
         this.speed = 0; 
+        this.timeWings = null;
+        this.time = null;
+        this.previous = 0; 
         this.transport = false; 
         this.moving = false; 
         this.down = false; 
         this.up = false; 
         this.slow = false; 
         this.stop = false; 
-        this.pollenHold = [];  
+        this.pollenHold = []; 
+        this.vx = 0; 
+        this.vy = 0;  
         this.scene.pushMatrix();
         this.scene.popMatrix();
         this.initMaterials(); 
+    }
+
+    accelerateX(a) 
+    {
+        this.vx += a * 0.1 * this.scene.speedFactor; 
+        if(this.vx <= 0) 
+        {
+            this.vx = 0;
+        }
+    }
+    accelerateY(a) 
+    {
+        this.vy += a * 0.1 * this.scene.speedFactor;
+        console.log("the value of the this.vy is: " + this.vy);
     }
 
     calculateInitialPolenPositions(posFlowers) {
@@ -45,7 +62,7 @@ export class MyBee extends CGFobject {
             let yOffset = 0.1; 
             this.pollenPos = [];
             for(let i = 0; i < posFlowers.length; i++) {
-                this.pollenPos.push([posFlowers[i][0], posFlowers[i][2], posFlowers[i][1]]);
+                this.pollenPos.push([posFlowers[i][0], posFlowers[i][2]+0.1, posFlowers[i][1], Math.random() * 45]);
             }
             this.initialPollenPositionsCalculated = true;
         }
@@ -56,9 +73,9 @@ export class MyBee extends CGFobject {
         for(let i = 0; i < this.pollenPos.length; i++) {
             this.scene.pushMatrix();
             if(this.transport) {
-                this.pollen.display(this.pollenPos[i][0], this.pollenPos[i][1], this.pollenPos[i][2]);
+                this.pollen.display(this.pollenPos[i][0], this.pollenPos[i][1], this.pollenPos[i][2], this.pollenPos[i][3]);
             } else {
-                this.pollen.display(this.pollenPos[i][0], this.pollenPos[i][1], this.pollenPos[i][2]);
+                this.pollen.display(this.pollenPos[i][0], this.pollenPos[i][1], this.pollenPos[i][2], this.pollenPos[i][3]);
             }
             this.scene.popMatrix();
         }
@@ -66,9 +83,6 @@ export class MyBee extends CGFobject {
 
     handle(pollen) {
         let distance = Math.sqrt(Math.pow(this.x - pollen[0], 2) + Math.pow(this.y - pollen[1], 2) + Math.pow(this.z - pollen[2], 2));
-        console.log("Distance: " + distance);
-        console.log("Pollen: " + pollen);
-        console.log("PollenPos: " + this.pollenPos);
             if (distance < 2) { 
                 this.transport = true;
                 this.pollenPos = this.pollenPos.filter(pos => 
@@ -76,7 +90,6 @@ export class MyBee extends CGFobject {
                     Math.abs(pos[1] - pollen[1]) >= 0.0001 ||
                     Math.abs(pos[2] - pollen[2]) >= 0.0001
                 );
-                console.log("PollenPos after modification: " + this.pollenPos);
                 let newPollen = new MyPollen(this.scene); 
                 this.pollenHold = newPollen;
         }
@@ -115,39 +128,64 @@ export class MyBee extends CGFobject {
     }
 
     update(t) 
-{
-    if(this.targetPos) 
     {
-        let speed = 0.01; 
-        this.x += (this.targetPos[0] - this.x) * speed;
-        this.y += (this.targetPos[1] - this.y) * speed;
-        this.z += (this.targetPos[2] - this.z) * speed;
-        console.log("target Pos " + this.targetPos);
-
-        // If the bee is close enough to the target position
-        if(Math.abs(this.x - this.targetPos[0]) < 0.1 && Math.abs(this.y - this.targetPos[1]) < 0.1 && Math.abs(this.z - this.targetPos[2]) < 0.1) 
+        let time = t / 1000; 
+        let delta = 2 / 60; 
+        if(this.targetPos) 
         {
-            console.log("entered in the loop");     
-            this.transport = false;
-            this.pollenHold = null; 
-            this.targetPos = null;
-            //this.pollenPos.push([this.x, this.y, this.z])
-        }
-    }
+            let speed = 0.01; 
+            this.x += (this.targetPos[0] - this.x) * speed;
+            this.y += (this.targetPos[1] - this.y) * speed;
+            this.z += (this.targetPos[2] - this.z) * speed;
 
-    if(this.animation) 
-    {
-        this.time = Math.PI * (t/ 1000);
+            // If the bee is close enough to the target position
+            if(Math.abs(this.x - this.targetPos[0]) < 0.1 && Math.abs(this.y - this.targetPos[1]) < 0.1 && Math.abs(this.z - this.targetPos[2]) < 0.1) 
+            {
+                this.transport = false;
+                this.pollenHold = null; 
+                this.targetPos = null;
+                //this.pollenPos.push([this.x, this.y, this.z])
+            }
+        }
+        if(this.moving) 
+        {
+            this.x += Math.cos(this.orientation) * this.vx;
+            this.z += Math.sin(-this.orientation) * this.vx;
+        }
+        if(this.moving && this.down) 
+        {
+            console.log("the value of the this.y is: " + this.y);
+            this.y += this.vy; 
+        }
+        if(this.moving && this.up)
+        {
+            this.y += this.vy; 
+        }
+        if(this.animation) 
+        {
+            time = Math.PI * (t/ 1000);
+        }
+        else if(this.animation && this.transport) 
+        {
+            time = Math.PI * (t/ 1000);
+        }
+        else if(!this.animation) 
+        {
+            time = 0;
+        }
+        else 
+        {
+            if(t % 1000 < 500) 
+                {
+                    this.y -= delta; 
+                }
+            else if(t % 1000 > 500 && t % 1000 < 1000) 
+                {
+                    this.y += delta; 
+                }
+        }
+        this.time = time;
     }
-    else if(this.animation && this.transport) 
-    {
-        this.time = Math.PI * (t/ 1000);
-    }
-    else 
-    {
-        this.time = 0;
-    }
-}
 
     updateWings(t) {
         if(this.animation)
@@ -160,12 +198,7 @@ export class MyBee extends CGFobject {
         }
     }
 
-    accelerate(v) {
-        this.speed += v * 0.1 * this.scene.speedFactor; 
-        if(this.speed <= 0) {
-          this.speed = 0;
-        }
-      }
+
 
     
     move(scaleFactor) 
@@ -175,21 +208,14 @@ export class MyBee extends CGFobject {
         if (this.transport) {
             this.pollen.display(this.pollenPos[0], this.pollenPos[1], this.pollenPos[2]);
         }
-        console.log("position of the bee: " + this.x + " " + this.y + " " + this.z);
         this.scene.rotate(this.orientation,0,1,0);
         this.display(scaleFactor);
         this.scene.popMatrix();
+        
     }
 
     turn(v) {
         this.orientation -= v * 0.8 * this.scene.speedFactor;
-    }
-
-    accelerate(v) {
-        this.speed += v * 0.1 * this.scene.speedFactor; 
-        if(this.speed <= 0) {
-            this.speed = 0;
-        }
     }
     
 

@@ -13,6 +13,7 @@ import { MyBee } from "./Objects/MyBee.js";
 import { MySteam } from "./Objects/MySteam.js";
 import { MyHive } from "./Objects/MyHive.js";
 import { MyPollen } from "./Objects/MyPollen.js";
+import {  MyGrass } from "./Objects/MyGrass.js";
 
 
 /**
@@ -41,7 +42,7 @@ export class MyScene extends CGFscene {
     this.gl.depthFunc(this.gl.LEQUAL);
 
     //Initialize scene objects
-    this.time = null; 
+    this.start = null; 
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this,30);
     this.sphere = new MySphere(this,32,16,0.1);
@@ -52,16 +53,19 @@ export class MyScene extends CGFscene {
     this.bee = new MyBee(this,0,10,0);
     this.stem = new MySteam(this, 0.1, 0.1, 0.1, 10, [1, 1, 1, 1, 1]);
     this.hive = new MyHive(this,0,0);
+    this.grass = new MyGrass(this, 0, 0, 0, 1, 0);
+    this.pollen = new MyPollen(this);
     this.pollenPos = []; 
     this.posFlowers = [];
 
 
     //Objects connected to MyInterface
     this.displayAxis = true;
+    this.windFactor = 0; 
     this.scaleFactor = 1;
     this.displaySphere = true; 
     this.displayPanoram = true;
-    this.speedFactor = 0;
+    this.speedFactor = 0.1;
     this.scaleFactor = 1; 
 
     this.enableTextures(true);
@@ -70,11 +74,27 @@ export class MyScene extends CGFscene {
     this.appearance = new CGFappearance(this);
     this.appearance.setTexture(this.texture);
     this.appearance.setTextureWrap('REPEAT', 'REPEAT');
+
+    this.setUpdatePeriod(1000 / 100);
+
+    this.start = Date.now(); 
+  }
+  update(t) {
+    this.checkKeys();
+    this.bee.move(this.scaleFactor);
+
+    this.bee.update(t);
+    this.bee.updateWings(t);
+    // this.grass.update(time);
+
+      if(this.bee.moving && this.bee.down) 
+      {
+        this.checkRadius();
+      }
   }
 
   checkRadius() {
     for (let i = 0; i < this.posFlowers.length; i++) {
-      console.log("The value of the polen are " + this.bee.pollenPos[i]);
         let flowerX = this.posFlowers[i][0];
         let flowerZ = this.posFlowers[i][1]; 
         let flowerY = this.posFlowers[i][2];
@@ -84,9 +104,6 @@ export class MyScene extends CGFscene {
             Math.pow(this.bee.z - flowerZ, 2) +
             Math.pow(this.bee.y - flowerY, 2)
         );
-        console.log("the distance is " + distance);
-
-
         if (distance < 2) { 
           this.bee.animation = false; 
           this.bee.targetPos = [flowerX, flowerY + 0.5, flowerZ]
@@ -102,12 +119,13 @@ export class MyScene extends CGFscene {
     if(this.gui.isKeyPressed("KeyR")) 
     {
       text+=" R"
+      this.bee.animation = true; 
       this.bee.reset(); 
       keysPressed = true;
     }
     if (this.gui.isKeyPressed("KeyW")) {
       text += " W ";
-      this.speedFactor += 0.01; 
+      this.bee.accelerateX(1);
       this.bee.moving = true; 
       keysPressed = true;
     }
@@ -121,7 +139,7 @@ export class MyScene extends CGFscene {
       //this.bee.slow = true; 
       if(this.speedFactor > 0)
         {
-          this.speedFactor -= 0.01;
+          this.bee.accelerateX(-1);
         }
       keysPressed = true;
     }
@@ -136,6 +154,7 @@ export class MyScene extends CGFscene {
         this.bee.down = true; 
         this.bee.up = false;
         keysPressed = true;
+        this.bee.accelerateY(-1);
     }
     if(this.gui.isKeyPressed("KeyP"))
     {
@@ -147,6 +166,7 @@ export class MyScene extends CGFscene {
       let pollenX = 0; 
       let pollenY = 0; 
       let pollenZ = 0; 
+      this.bee.accelerateY(1);
       for(let i = 0; i < this.pollenPos.length; i++) 
       {
         
@@ -159,11 +179,8 @@ export class MyScene extends CGFscene {
           Math.pow(this.bee.y - pollenY, 2) + 
           Math.pow(this.bee.z - pollenZ, 2)
         );
-        console.log("the value of the distance to the polen is " + distance);
         if(distance < 1.1) 
         {
-          console.log("The bee is close to the polen");
-          console.log("The value of the polenPos is " + this.pollenPos[i]);
           this.bee.animation = true; 
           this.bee.transport = true;
           this.bee.handle(this.pollenPos[i]);
@@ -265,26 +282,17 @@ export class MyScene extends CGFscene {
    
    
 
-    this.pushMatrix(); 
-    const currentTime = Date.now();
-    this.bee.update(currentTime);
-    this.bee.updateWings(currentTime);
-    this.bee.move(this.scaleFactor);
-    this.popMatrix();
+
 
     
     this.pushMatrix();
     this.posFlowers = this.garden.display();
-    console.log("the value of the posFlowers is " + this.posFlowers);
     this.popMatrix();
     this.pushMatrix();
     this.pollenPos = this.bee.calculateInitialPolenPositions(this.posFlowers);
     this.bee.displayPolen();
     this.popMatrix();
-    //console.log("The value of the pollenPos is " + this.pollenPos); 
-
-    
-   
+    //console.log("The value of the pollenPos is " + this.pollenPos);    
 
     // this.pushMatrix(); 
     // this.stem.display();
@@ -306,33 +314,6 @@ export class MyScene extends CGFscene {
     }
     // ---- END Primitive drawing section
   }
-  update(time) {
-    this.checkKeys();
-    if(!this.bee.animation)
-    { 
-    }
-    else if(this.bee.targetPos != null) 
-    {
-
-    }
-    else 
-    {
-      if(this.bee.moving) 
-      {
-        this.bee.x += Math.cos(this.bee.orientation) * this.speedFactor;
-        this.bee.z += Math.sin(-this.bee.orientation) * this.speedFactor;
-      }
-      if(this.bee.moving && this.bee.down) 
-      {
-        this.bee.y -= 0.1;
-        this.checkRadius();
-      }
-      if(this.bee.moving && this.bee.up) 
-      {
-        this.bee.y += 0.1;
-      }
-    }
-    
-  }
+  
     
 }
