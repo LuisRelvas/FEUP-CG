@@ -14,6 +14,7 @@ import { MySteam } from "./Objects/MySteam.js";
 import { MyHive } from "./Objects/MyHive.js";
 import { MyPollen } from "./Objects/MyPollen.js";
 import {  MyGrass } from "./Objects/MyGrass.js";
+import { MyTrapezium } from "./GeometricFigures/MyTrapezium.js";
 
 
 /**
@@ -55,6 +56,9 @@ export class MyScene extends CGFscene {
     this.hive = new MyHive(this,0,0);
     this.grass = new MyGrass(this, 0, 0, 0, 1, 0);
     this.pollen = new MyPollen(this);
+    this.trapezium = new MyTrapezium(this);
+    this.restartVx = 0; 
+    this.restartVy = 0; 
     this.pollenPos = []; 
     this.posFlowers = [];
 
@@ -65,6 +69,7 @@ export class MyScene extends CGFscene {
     this.scaleFactor = 1;
     this.displaySphere = true; 
     this.displayPanoram = true;
+    this.lockBee = false;
     this.speedFactor = 0.1;
     this.scaleFactor = 1; 
 
@@ -80,14 +85,25 @@ export class MyScene extends CGFscene {
     this.start = Date.now(); 
   }
   update(t) {
+    
     this.checkKeys();
     this.bee.move(this.scaleFactor);
-
     this.bee.update(t);
     this.bee.updateWings(t);
+    this.grass.update(t);
     // this.grass.update(time);
 
-      if(this.bee.moving && this.bee.down) 
+    if(this.lockBee) 
+      {
+        this.camera.setPosition(vec3.fromValues(this.bee.x - 5, this.bee.y + 5, this.bee.z));
+         // Update the camera orientation to match the bee's orientation
+      this.camera.setTarget(vec3.fromValues(
+        this.bee.x + Math.cos(this.bee.orientation),
+        this.bee.y,
+        this.bee.z + Math.sin(this.bee.orientation)
+    ));
+      }
+      if(this.bee.moving && this.bee.down && this.bee.animation) 
       {
         this.checkRadius();
       }
@@ -105,8 +121,15 @@ export class MyScene extends CGFscene {
             Math.pow(this.bee.y - flowerY, 2)
         );
         if (distance < 2) { 
+          console.log("the last velocity downing is " + this.bee.vx + " " + this.bee.vy);
+          console.log("the value of the restartVx and Vy is " + this.bee.vx + " " + this.bee.vy);
+          this.restartVx = this.bee.vx;
+          this.restartVy = this.bee.vy;
           this.bee.animation = false; 
+          this.bee.vy = 0;
+          this.bee.vx = 0;
           this.bee.targetPos = [flowerX, flowerY + 0.5, flowerZ]
+          
         }
     }
 }
@@ -155,6 +178,7 @@ export class MyScene extends CGFscene {
         this.bee.up = false;
         keysPressed = true;
         this.bee.accelerateY(-1);
+        this.checkRadius(); 
     }
     if(this.gui.isKeyPressed("KeyP"))
     {
@@ -179,10 +203,14 @@ export class MyScene extends CGFscene {
           Math.pow(this.bee.y - pollenY, 2) + 
           Math.pow(this.bee.z - pollenZ, 2)
         );
-        if(distance < 1.1) 
+        if(distance < 1.1 && !this.bee.transport) 
         {
+          this.bee.vx = this.restartVx;  
+          this.bee.vy = -this.restartVy;  
+          this.restartVx = 0; 
+          this.restartVy = 0; 
           this.bee.animation = true; 
-          this.bee.transport = true;
+          this.bee.transport = true; 
           this.bee.handle(this.pollenPos[i]);
         }
 
@@ -213,7 +241,11 @@ export class MyScene extends CGFscene {
       vec3.fromValues(50, 10, 15),
       vec3.fromValues(0, 0, 0)
     );
+    
   }
+
+
+  
 
   initTextures()
   {
@@ -251,11 +283,12 @@ export class MyScene extends CGFscene {
 
     // Draw axis
     if (this.displayAxis) this.axis.display();
+
     // ---- BEGIN Primitive drawing section
 
-    // this.pushMatrix();
-    // this.hive.display();
-    // this.popMatrix();
+    this.pushMatrix();
+    this.hive.display();
+    this.popMatrix();
 
    
     // this.pushMatrix();
@@ -279,12 +312,7 @@ export class MyScene extends CGFscene {
     // this.flower.display();
     // this.popMatrix();
     
-   
-   
-
-
-
-    
+ 
     this.pushMatrix();
     this.posFlowers = this.garden.display();
     this.popMatrix();
@@ -294,8 +322,9 @@ export class MyScene extends CGFscene {
     this.popMatrix();
     //console.log("The value of the pollenPos is " + this.pollenPos);    
 
-    // this.pushMatrix(); 
-    // this.stem.display();
+    // this.pushMatrix();
+    // this.grass.display();
+    // this.setActiveShader(this.defaultShader);
     // this.popMatrix();
  
 

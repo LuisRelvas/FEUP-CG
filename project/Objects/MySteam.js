@@ -126,7 +126,6 @@ export class MySteam extends CGFobject {
 			}
 		}
 	
-	
 		this.scene.popMatrix();
 	
 		return [lastPosX, lastPosZ, this.cilindersInclination[this.cilindersInclination.length - 1]];

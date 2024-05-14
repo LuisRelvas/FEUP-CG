@@ -38,6 +38,8 @@ export class MyBee extends CGFobject {
         this.pollenHold = []; 
         this.vx = 0; 
         this.vy = 0;  
+        this.aX = 0; 
+        this.aY = 0; 
         this.scene.pushMatrix();
         this.scene.popMatrix();
         this.initMaterials(); 
@@ -45,6 +47,7 @@ export class MyBee extends CGFobject {
 
     accelerateX(a) 
     {
+        console.log("Entered in the accelerateX function");
         this.vx += a * 0.1 * this.scene.speedFactor; 
         if(this.vx <= 0) 
         {
@@ -53,6 +56,7 @@ export class MyBee extends CGFobject {
     }
     accelerateY(a) 
     {
+        console.log("entered in the accelerateY function")
         this.vy += a * 0.1 * this.scene.speedFactor;
         console.log("the value of the this.vy is: " + this.vy);
     }
@@ -62,7 +66,7 @@ export class MyBee extends CGFobject {
             let yOffset = 0.1; 
             this.pollenPos = [];
             for(let i = 0; i < posFlowers.length; i++) {
-                this.pollenPos.push([posFlowers[i][0], posFlowers[i][2]+0.1, posFlowers[i][1], Math.random() * 45]);
+                this.pollenPos.push([posFlowers[i][0], posFlowers[i][2], posFlowers[i][1], Math.random() * 45]);
             }
             this.initialPollenPositionsCalculated = true;
         }
@@ -90,6 +94,7 @@ export class MyBee extends CGFobject {
                     Math.abs(pos[1] - pollen[1]) >= 0.0001 ||
                     Math.abs(pos[2] - pollen[2]) >= 0.0001
                 );
+                console.log("Handled a pollen"); 
                 let newPollen = new MyPollen(this.scene); 
                 this.pollenHold = newPollen;
         }
@@ -152,12 +157,11 @@ export class MyBee extends CGFobject {
             this.x += Math.cos(this.orientation) * this.vx;
             this.z += Math.sin(-this.orientation) * this.vx;
         }
-        if(this.moving && this.down) 
+        if(this.moving && this.down && this.animation) 
         {
-            console.log("the value of the this.y is: " + this.y);
             this.y += this.vy; 
         }
-        if(this.moving && this.up)
+        if(this.moving && this.up && this.animation)
         {
             this.y += this.vy; 
         }
@@ -204,7 +208,7 @@ export class MyBee extends CGFobject {
         this.scene.pushMatrix();
         this.scene.translate(this.x, this.y, this.z);
         if (this.transport) {
-            this.pollen.display(this.pollenPos[0], this.pollenPos[1], this.pollenPos[2]);
+            this.pollen.display(this.pollenPos[0], this.pollenPos[1], this.pollenPos[2],0);
         }
         this.scene.rotate(this.orientation,0,1,0);
         this.display(scaleFactor);
@@ -333,7 +337,7 @@ export class MyBee extends CGFobject {
 
         if(this.transport) 
         {
-            this.pollenHold.display(0, -0.3, 0);
+            this.pollenHold.display(0, -0.3, 0,0);
         }
 
         this.scene.gl.enable(this.scene.gl.BLEND);

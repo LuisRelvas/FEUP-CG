@@ -11,11 +11,26 @@ export class MyHive extends CGFobject{
         this.quad = new MyQuad(this.scene);
         this.x = x; 
         this.y = y; 
+        this.initMaterials(); 
+    }
+    initMaterials() 
+    {
+        this.hiveMaterial = new CGFappearance(this.scene);
+        this.hiveTexture = new CGFtexture(this.scene, "/project/images/hive_texture.jpg");
+        this.hiveMaterial.setTexture(this.hiveTexture);
+        this.hiveMaterial.setTextureWrap('REPEAT', 'REPEAT');
+
+        this.telhadoMaterial = new CGFappearance(this.scene);
+        this.telhadoTexture = new CGFtexture(this.scene, "/project/images/telhado_texture.jpg");
+        this.telhadoMaterial.setTexture(this.telhadoTexture);
+        this.telhadoMaterial.setTextureWrap('REPEAT', 'REPEAT');
+
     }
     display() 
     {
         //tampa inferior 
         this.scene.pushMatrix(); 
+        this.hiveMaterial.apply();
         this.scene.translate(this.x,this.y,0);
         this.scene.pushMatrix();
         this.scene.scale(2,1,2); 
@@ -23,7 +38,8 @@ export class MyHive extends CGFobject{
         this.scene.popMatrix();
 
         //tampa lateral 
-        this.scene.pushMatrix(); 
+        this.scene.pushMatrix();
+        this.hiveMaterial.apply(); 
         this.scene.rotate(90 * Math.PI / 180 , 1,0,0);
         this.scene.scale(2,1,2); 
         this.scene.translate(0,-1,-0.5);
@@ -33,6 +49,7 @@ export class MyHive extends CGFobject{
 
         //tampa lateral 
         this.scene.pushMatrix(); 
+        this.hiveMaterial.apply();
         this.scene.rotate(90 * Math.PI / 180 , 1,0,0);
         this.scene.scale(2,1,2); 
         this.scene.translate(0,1,-0.5);
@@ -41,6 +58,7 @@ export class MyHive extends CGFobject{
 
         //tampa do fundo
         this.scene.pushMatrix(); 
+        this.hiveMaterial.apply();
         this.scene.rotate(90 * Math.PI / 180 , 0,0,1);
         this.scene.scale(2,1,2);
         this.scene.translate(0.5,1,0);
@@ -49,6 +67,7 @@ export class MyHive extends CGFobject{
 
         //tampa superior
         this.scene.pushMatrix(); 
+        this.hiveMaterial.apply();
         this.scene.scale(2,1,2);
         this.scene.translate(0,2,0); 
         this.quad.display();
@@ -56,6 +75,7 @@ export class MyHive extends CGFobject{
 
         //telhado
         this.scene.pushMatrix(); 
+        this.telhadoMaterial.apply();
         this.scene.translate(0,2,1);
         this.scene.rotate(45 * Math.PI / 180 , 1, 0, 0);
         this.scene.scale(2,1,1.41); 
@@ -65,6 +85,7 @@ export class MyHive extends CGFobject{
 
         //telhado
         this.scene.pushMatrix(); 
+        this.telhadoMaterial.apply();
         this.scene.translate(0,2,-1);
         this.scene.rotate(-45 * Math.PI / 180 , 1, 0, 0);
         this.scene.scale(2,1,1.41); 
@@ -74,18 +95,18 @@ export class MyHive extends CGFobject{
 
         //Triangle para o telhado 
         this.scene.pushMatrix(); 
+        this.telhadoMaterial.apply();
         this.scene.translate(1,2,0);
         this.scene.rotate(90 * Math.PI / 180 , 0, 1, 0);
         this.triangle.display();
         this.scene.popMatrix();
 
         this.scene.pushMatrix(); 
+        this.telhadoMaterial.apply();
         this.scene.translate(-1,2,0);
         this.scene.rotate(90 * Math.PI / 180 , 0, 1, 0);
         this.triangle.display();
         this.scene.popMatrix();
-
-
         this.scene.popMatrix();
     }
 }
