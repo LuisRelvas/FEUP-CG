@@ -17,7 +17,6 @@ import {  MyGrass } from "./Objects/MyGrass.js";
 import { MyTrapezium } from "./GeometricFigures/MyTrapezium.js";
 import { MyCloud } from "./GeometricFigures/MyCloud.js";
 import { MyCloudSet } from "./Objects/CloudSet.js";
-import { MyGrassCall } from "./Objects/MyGrassCall.js";
 import { MyBlade } from "./GeometricFigures/MyBlade.js";
 
 
@@ -65,7 +64,6 @@ export class MyScene extends CGFscene {
     this.trapezium = new MyTrapezium(this);
     this.cloud = new MyCloud(this,0,0,0, 3, 3);
     this.cloudSet = new MyCloudSet(this);
-    this.grassCall = new MyGrassCall(this);
     this.blade = new MyBlade(this);
     this.restartVx = 0; 
     this.restartVy = 0; 
@@ -320,6 +318,7 @@ export class MyScene extends CGFscene {
     {
     this.pushMatrix();
     this.posFlowers = this.garden.display();
+    this.setActiveShader(this.defaultShader);
     this.popMatrix();
     this.pushMatrix();
     this.pollenPos = this.bee.calculateInitialPolenPositions(this.posFlowers);

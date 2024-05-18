@@ -13,11 +13,12 @@ varying highp vec3 vEyeVec;
 
 uniform float windFactor; 
 uniform float time;
+uniform float aRandomFactor; 
 
 void main(void) {
     vec4 tmp = aVertexPosition;
 
-    tmp.z += cos(time * 0.01) * sin(tmp.y * 0.3) * windFactor; 
+    tmp.z += cos(time * 0.01) * sin(tmp.y * aRandomFactor) * windFactor; 
     // Transformed Vertex position
     vec4 vertex = uMVMatrix * tmp;
     gl_Position = uPMatrix * vertex;

@@ -38,23 +38,17 @@ export class MyGrass extends CGFobject {
         let heightPerTrapezium = (1 - 0.2) / this.numTriangles; 
         let scaleX = 1; 
         let scaleDecrement = 0.5; 
-        for (let i = 0; i < this.numTriangles; i++) {
-            let triangle = new MyRecTriangle(this.scene);
-            let trapezium = new MyBlade(this.scene);
-            trapezium.randomScaleY = heightPerTrapezium; 
-            trapezium.randomScaleX = scaleX; 
-            scaleX -= scaleDecrement; 
-            if (scaleX < 0.2) scaleX = 0.25; 
-            this.trianglesAngles.push(Math.random() * 0.1);
-            this.triangles.push(trapezium);
-        }
+        let trapezium = new MyBlade(this.scene);
+        this.triangles.push(trapezium);
     }
 
 
-    update(t) {
+    update(t, angle) {
+        console.log("the value of the angle is: " + angle);
         this.shader.setUniformsValues({ 
             windFactor: this.scene.windFactor,
-            time : t % 100000
+            time : t % 100000,
+            aRandomFactor : angle
         });
     }
 
@@ -70,7 +64,6 @@ export class MyGrass extends CGFobject {
         this.scene.setActiveShader(this.shader);  
         this.scene.translate(this.x, this.y, this.z);
         this.triangles[0].display();
-        this.scene.setActiveShader(this.scene.defaultShader);
         this.scene.popMatrix(); 
     }
 
