@@ -26,18 +26,26 @@ export class MyInterface extends CGFinterface {
         //Slider element in GUI
         this.gui.add(this.scene, 'scaleFactor', 0.1, 5).name('Scale Factor');
 
+        this.gui.add(this.scene, 'speedFactor', 0.1, 3).name('Speed Factor');
+
+        this.gui.add(this.scene, 'rockScaleFactor', 0.5, 3).name('Rock Scale Factor');
+
+        this.gui.add(this.scene, 'windFactor', 0, 1).name('Wind Factor');   
+
+
         //Checkbox to control the Sphere Visibility
         this.gui.add(this.scene,'displaySphere').name('Sphere Visibility');
 
         //Checkbox to control the Panoram Visibility
         this.gui.add(this.scene, 'displayPanoram').name('Inside Visibility');
 
-        this.gui.add(this.scene, 'speedFactor', 0.1, 3).name('Speed Factor');
+        this.gui.add(this.scene, 'displayRockSet').name('Display Rock Set');  
 
-        this.gui.add(this.scene, 'scaleFactor', 0.5, 3).name('Turn Factor');
+        this.gui.add(this.scene, 'displayFlowers').name('Display Flowers');
 
-        this.gui.add(this.scene, 'windFactor', 0, 1).name('Wind Factor');   
+        this.gui.add(this.scene, 'displayHive').name('Display Hive');
 
+        this.gui.add(this.scene, 'displayBee').name('Display Bee');
 
         this.initKeys();
     }

@@ -103,7 +103,7 @@ export class MyFlower extends CGFobject {
 	display() {
 		let finalPos = []; 
 		this.scene.pushMatrix();
-		this.scene.translate(this.x, 0, this.y);
+		this.scene.translate(this.x, -50, this.y);
 		this.scene.pushMatrix();
 		this.scene.rotate(-90 * Math.PI / 180, 1, 0, 0);
 		finalPos = this.steam.display();
