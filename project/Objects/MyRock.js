@@ -10,6 +10,12 @@ export class MyRock extends CGFobject {
         this.initBuffers();
     }
 
+    setPosition(x,y) 
+    {
+        this.x = x; 
+        this.y = y; 
+    }
+
     initBuffers() {
         this.vertices = [];
         this.indices = [];

@@ -16,11 +16,18 @@ export class MyFlower extends CGFobject {
 		this.petals= [];
 		this.pollen = new MyPollen(this.scene);
 		this.totalSize = this.createSteam();
-		this.petaltextures = ["/project/images/petalPink.jpg"]
+		this.petaltextures = ["/project/images/petal_orange.jpg", "/project/images/petal_pink.jpg", "/project/images/petal_purple.jpg", "/project/images/petal_red.jpg"];
 		this.createReceptacle(this.totalSize);
+		this.initialMaterials(); 
 		//layer 1
 		this.createPetals();
 	}
+	initialMaterials(){
+        this.petalMaterial = new CGFappearance(this.scene);
+		this.petalTexture = new CGFtexture(this.scene, this.petaltextures[Math.round(Math.random() * 3)]);
+		this.petalMaterial.setTexture(this.petalTexture);
+		this.petalMaterial.setTextureWrap('REPEAT', 'REPEAT');
+    };
 	setPosition(x, y) {
         this.x = x;
         this.y = y;
@@ -34,10 +41,13 @@ export class MyFlower extends CGFobject {
 		for (let layer = 0; layer < 2; layer++) {
 			let next = Math.random() * angleIncrement; 
 			for (let i = 0; i < this.numbPetals; i++){
-				let curPetal = new MyPetal(this.scene, Math.random()*30/(layer+1));
+				this.scene.pushMatrix();
+				this.petalMaterial.apply();
+				let curPetal = new MyPetal(this.scene, Math.random()*30/(layer+1),this.petalMaterial);
 				curPetal.setAngle(next);
 				this.petals.push(curPetal);
 				next += angleIncrement;
+				this.scene.popMatrix();
 			}
 		}
 	}

@@ -135,31 +135,37 @@ export class MyBee extends CGFobject {
     {
         let time = t / 1000; 
         let delta = time / 100; 
-        if(this.targetPos) 
+        if(this.targetPos != null) 
         {
             let speed = 0.01; 
             this.x += (this.targetPos[0] - this.x) * speed;
             this.y += (this.targetPos[1] - this.y) * speed;
             this.z += (this.targetPos[2] - this.z) * speed;
+            console.log("Entered in the targetPos");
 
             // If the bee is close enough to the target position
-            if(Math.abs(this.x - this.targetPos[0]) < 0.1 && Math.abs(this.y - this.targetPos[1]) < 0.1 && Math.abs(this.z - this.targetPos[2]) < 0.1) 
+            if(Math.abs(this.x - this.targetPos[0]) < 0.2 && Math.abs(this.y - this.targetPos[1]) < 0.2 && Math.abs(this.z - this.targetPos[2]) < 0.2) 
             {
+                console.log("entered in the else condition");
+                this.targetPos = null;
                 this.transport = false;
                 this.pollenHold = null; 
-                this.targetPos = null;
                 if(this.moveToHive) 
                     {
-                        this.pollenPos.push([this.x,this.y,this.z + this.displayPollenInHive,0]);
+                        this.pollenPos.push([this.x,this.y -2.48,this.z + this.displayPollenInHive,0]);
                         this.moveToHive = false;
-                        this.displayPollenInHive += 0.5
+                        this.displayPollenInHive += 0.1
+                        this.targetPos = null; 
                     }
+                
             }
         }
         if(this.moving) 
         {
             this.x += Math.cos(this.orientation) * this.vx;
+            console.log("the value of the this.x is " + this.x);
             this.z += Math.sin(-this.orientation) * this.vx 
+            console.log("the value of the this.z is " + this.z);
         }
         if(this.down && this.animation) 
         {

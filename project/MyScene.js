@@ -17,7 +17,6 @@ import {  MyGrass } from "./Objects/MyGrass.js";
 import { MyTrapezium } from "./GeometricFigures/MyTrapezium.js";
 import { MyCloud } from "./GeometricFigures/MyCloud.js";
 import { MyCloudSet } from "./Objects/CloudSet.js";
-import { MyGrassCall } from "./Objects/MyGrassCall.js";
 import { MyBlade } from "./GeometricFigures/MyBlade.js";
 
 
@@ -54,9 +53,11 @@ export class MyScene extends CGFscene {
     this.plane = new MyPlane(this,30);
     this.sphere = new MySphere(this,32,16,0.1);
     this.flower =  new MyFlower(this,4,3);
-    this.garden = new MyGarden(this, 2, 2);
+    this.garden = new MyGarden(this, 5, 5);
     this.rock = new MyRock(this, 1, 32, 16); 
-    this.rockSet = new MyRockSet(this, 10, 32, 16);
+    this.rockSet = new MyRockSet(this, [7, 5, 3, 1]);
+    this.rockSet2 = new MyRockSet(this, [6, 2, 1, 0]);
+    this.rockSet3 = new MyRockSet(this, [5, 3, 1, 0]);
     this.bee = new MyBee(this,0,10,0);
     this.stem = new MySteam(this, 0.1, 0.1, 0.1, 10, [1, 1, 1, 1, 1]);
     this.hive = new MyHive(this,0,0);
@@ -65,7 +66,6 @@ export class MyScene extends CGFscene {
     this.trapezium = new MyTrapezium(this);
     this.cloud = new MyCloud(this,0,0,0, 3, 3);
     this.cloudSet = new MyCloudSet(this);
-    this.grassCall = new MyGrassCall(this);
     this.blade = new MyBlade(this);
     this.restartVx = 0; 
     this.restartVy = 0; 
@@ -86,7 +86,7 @@ export class MyScene extends CGFscene {
     this.windFactor = 0; 
     this.scaleFactor = 1;
     this.rockScaleFactor = 1; 
-    this.displaySphere = true; 
+    this.displaySphere = false; 
     this.displayPanoram = true;
     this.lockBee = false;
     this.speedFactor = 0.1;
@@ -114,8 +114,6 @@ export class MyScene extends CGFscene {
             Math.pow(this.bee.y - flowerY, 2)
         );
         if (distance < 2) { 
-          console.log("the last velocity downing is " + this.bee.vx + " " + this.bee.vy);
-          console.log("the value of the restartVx and Vy is " + this.bee.vx + " " + this.bee.vy);
           this.restartVx = this.bee.vx;
           this.restartVy = this.bee.vy;
           this.bee.animation = false; 
@@ -219,7 +217,7 @@ export class MyScene extends CGFscene {
         this.bee.vx = 0;
         this.bee.vy = 0;
         this.bee.moveToHive = true; 
-        this.bee.targetPos = [this.hivePos[0]-97,(this.hivePos[1] * 3)-45,this.hivePos[2] * 3 + this.bee.displayPollenInHive];
+        this.bee.targetPos = [this.hivePos[0]-98,(this.hivePos[1] * 3)-45,this.hivePos[2] * 3 + this.bee.displayPollenInHive-1];
       }
     }
     if (keysPressed) {
@@ -231,16 +229,12 @@ export class MyScene extends CGFscene {
     this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
     this.lights[0].enable();
     this.lights[0].update();
+    this.lights[1].setPosition(-15, 0.5 , -5, 1); 
+    this.lights[1].setDiffuse(1.0, 1.0, 1.0, 1.0);
+    this.lights[1].enable();
+    this.lights[1].update();
 
-    var newLight = new CGFlight(this);
 
-    this.lights.push(newLight); 
-
-    var index = this.lights.length - 1; 
-    this.lights[index].setPosition(-15, 1, -5, 1);
-    this.lights[index].setDiffuse(1.0, 1.0, 1.0, 1.0);
-    this.lights[index].enable();
-    this.lights[index].update();
   }
 
   initCameras() {
@@ -307,6 +301,20 @@ export class MyScene extends CGFscene {
     this.hivePos = [rockSetPosition[1][0],rockSetPosition[0], rockSetPosition[1][2]];
     this.popMatrix();
     }
+
+    this.pushMatrix(); 
+    this.translate(50,-50,-100);
+    this.scale(3,3,3); 
+    this.rockSet2.display(); 
+    this.popMatrix(); 
+
+    this.pushMatrix(); 
+    this.translate(90,-50,150);
+    this.scale(3,3,3); 
+    this.rockSet3.display(); 
+    this.popMatrix(); 
+
+
     if(this.displayHive){
     this.pushMatrix();
     this.translate(-103, -48 + rockSetPosition[0] * this.rockScaleFactor * 3, -3);
@@ -320,24 +328,13 @@ export class MyScene extends CGFscene {
     {
     this.pushMatrix();
     this.posFlowers = this.garden.display();
+    this.setActiveShader(this.defaultShader);
     this.popMatrix();
     this.pushMatrix();
     this.pollenPos = this.bee.calculateInitialPolenPositions(this.posFlowers);
     this.bee.displayPolen();
     this.popMatrix();
     }
-
-
-    // this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA)
-    // this.gl.enable(this.gl.BLEND)
-    // this.pushMatrix(); 
-    // this.flower.setPosition(50,50);
-    // this.flower.display();
-    // this.popMatrix();
-    
- 
-    
-    //console.log("The value of the pollenPos is " + this.pollenPos);    
 
     this.pushMatrix();
     this.appearance.apply();
@@ -347,11 +344,6 @@ export class MyScene extends CGFscene {
     this.plane.display();
     this.popMatrix();
 
-
-    // this.pushMatrix();
-    // this.grass.display();
-    // this.setActiveShader(this.defaultShader);
-    // this.popMatrix();
 
     if(this.displayBee) 
     {

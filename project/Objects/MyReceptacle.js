@@ -26,7 +26,7 @@ export class MyReceptacle extends CGFobject {
 	{
 
 		this.receptacleMaterial = new CGFappearance(this.scene);
-		this.receptacleTexture = new CGFtexture(this.scene, this.textures[Math.round(Math.random() * 3)]);
+		this.receptacleTexture = new CGFtexture(this.scene, this.textures[Math.round(Math.random() * 2)]);
 		this.receptacleMaterial.setTexture(this.receptacleTexture);
 		this.receptacleMaterial.setTextureWrap('REPEAT', 'REPEAT');
 	};

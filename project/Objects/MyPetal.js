@@ -3,18 +3,17 @@ import { MyTriangle } from '../GeometricFigures/MyTriangle.js';
 
 
 /**
- * MyTriangle
+ * MyPetal
  * @constructor
  * @param scene - Reference to MyScene object
  */
 export class MyPetal extends CGFobject {
-	constructor(scene, petalTriangleRotation) {
+	constructor(scene, petalTriangleRotation,petalMaterial) {
 		super(scene); 
         this.petalTriangleRotation = petalTriangleRotation;
 		this.triangle1 = new MyTriangle(this.scene);	
 		this.triangle2 = new MyTriangle(this.scene);	
-		this.initialMaterials();
-
+        this.petalMaterial = petalMaterial;
         // Set texture coordinates for each triangle
         this.triangle1.setTexCoords();
         this.triangle2.setTexCoords();
@@ -29,13 +28,7 @@ export class MyPetal extends CGFobject {
         return this.angle;
     }
 
-    //Math.random [0,1[*angle
-    initialMaterials(){
-        this.petalMaterial = new CGFappearance(this.scene);
-		this.petalTexture = new CGFtexture(this.scene, "/project/images/petalPink.jpg");
-		this.petalMaterial.setTexture(this.petalTexture);
-		this.petalMaterial.setTextureWrap('REPEAT', 'REPEAT');
-    };
+    
 
     display(){
         

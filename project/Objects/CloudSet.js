@@ -32,7 +32,7 @@ export class MyCloudSet extends CGFobject {
         for (let i = 0; i < 100; i++) {
             randomX = Math.random() * 100;
             randomY = Math.random() * 25;
-            randomZ = Math.random() * 100;
+            randomZ = Math.random() * 200 - 100;
             randomRadius = Math.random() * 2;
             randomNumSpheres = Math.random() * 5;
             randomScaleX  = Math.random() * 2 + 2;

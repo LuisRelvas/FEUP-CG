@@ -3,13 +3,13 @@ import { MySphere } from "../GeometricFigures/MySphere.js";
 import { MyRock } from "./MyRock.js";
 
 export class MyRockSet extends CGFobject {
-    constructor(scene) 
+    constructor(scene,layers) 
     {
         super(scene);
         this.rock = new MyRock(this.scene, 1, 32, 16);
-        this.layers = [7, 5, 3, 1];
+        this.layers = layers;
         this.rocks = []; 
-        this.maxHeight = 0; // Initialize max height to 0
+        this.maxHeight = 0; 
         this.initRocks(); 
     }
 

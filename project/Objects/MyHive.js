@@ -144,7 +144,6 @@ export class MyHive extends CGFobject{
         this.scene.popMatrix();
         
         this.scene.pushMatrix(); 
-        this.hivePollenMaterial.apply();
         this.scene.translate(1,0,0);
         this.scene.scale(1,0.5,2);
         this.quad.display(); 
