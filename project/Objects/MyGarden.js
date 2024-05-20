@@ -52,6 +52,8 @@ export class MyGarden extends CGFobject{
                         let posX = 50 + i * spacing - totalSize / 2 + offsetX ;
                         let posY = 50 + j * spacing - totalSize / 2 + offsetY;
                         this.blade = new MyGrass(this.scene, posX, -50,posY);
+                        this.blade.angle = Math.random();
+                        console.log("the value of the this.blade.angle is: " + this.blade.angle);
                         this.grass.push(this.blade);
                     }
             }
@@ -73,7 +75,7 @@ export class MyGarden extends CGFobject{
     update(t) 
     {
         this.grass.forEach(grassBlade => {
-            grassBlade.update(t);
+            grassBlade.update(t,grassBlade.angle);
         });
     }
 

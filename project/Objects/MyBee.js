@@ -144,10 +144,11 @@ export class MyBee extends CGFobject {
             console.log("Entered in the targetPos");
 
             // If the bee is close enough to the target position
-            if(Math.abs(this.x - this.targetPos[0]) < 0.2 && Math.abs(this.y - this.targetPos[1]) < 0.2 && Math.abs(this.z - this.targetPos[2]) < 0.2) 
+            if(Math.abs(this.x - this.targetPos[0]) < 0.4 && Math.abs(this.y - this.targetPos[1]) < 0.4 && Math.abs(this.z - this.targetPos[2]) < 0.4) 
             {
                 console.log("entered in the else condition");
                 this.targetPos = null;
+                this.moving = true; 
                 this.transport = false;
                 this.pollenHold = null; 
                 if(this.moveToHive) 

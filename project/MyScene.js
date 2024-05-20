@@ -84,7 +84,6 @@ export class MyScene extends CGFscene {
     this.displayFlowers = true; 
     this.displayRockSet = true; 
     this.windFactor = 0; 
-    this.scaleFactor = 1;
     this.rockScaleFactor = 1; 
     this.displaySphere = false; 
     this.displayPanoram = true;
@@ -174,6 +173,7 @@ export class MyScene extends CGFscene {
     if(this.gui.isKeyPressed("KeyP"))
     {
       text+=" P "; 
+      this.bee.targetPos = null;
       this.bee.down = false;
       this.bee.moving = true; 
       this.bee.up = true;  
