@@ -11,23 +11,23 @@ Here are some screenshots:
 
 ![Screenshot 1](screenshots/project-t01g02-1.png)
 
-![Screenshot 2](https://git.fe.up.pt/cg/cg-2023-2024/t01/cg-t01-g02/-/blob/master/project/screenshots/project-t01g02-2.png)
+![Screenshot 2](screenshots/project-t01g02-2.png)
 
-![Screenshot 3](https://git.fe.up.pt/cg/cg-2023-2024/t01/cg-t01-g02/-/blob/master/project/screenshots/project-t01g02-3.png)
+![Screenshot 3](screenshots/project-t01g02-3.png)
 
-![Screenshot 3.1](https://git.fe.up.pt/cg/cg-2023-2024/t01/cg-t01-g02/-/blob/master/project/screenshots/project-t01g02-3-1.png)
+![Screenshot 3.1](screenshots/project-t01g02-3-1.png)
 
-![Screenshot 4](https://git.fe.up.pt/cg/cg-2023-2024/t01/cg-t01-g02/-/blob/master/project/screenshots/project-t01g02-4.png)
+![Screenshot 4](screenshots/project-t01g02-4.png)
 
-![Screenshot 5](https://git.fe.up.pt/cg/cg-2023-2024/t01/cg-t01-g02/-/blob/master/project/screenshots/project-t01g02-5.png)
+![Screenshot 5](screenshots/project-t01g02-5.png)
 
-![Screenshot 6](https://git.fe.up.pt/cg/cg-2023-2024/t01/cg-t01-g02/-/blob/master/project/screenshots/project-t01g02-6.png)
+![Screenshot 6](screenshots/project-t01g02-6.png)
 
-![Screenshot 6.1](https://git.fe.up.pt/cg/cg-2023-2024/t01/cg-t01-g02/-/blob/master/project/screenshots/project-t01g02-6-1.png)
+![Screenshot 6.1](screenshots/project-t01g02-6-1.png)
 
-![Screenshot 7](https://git.fe.up.pt/cg/cg-2023-2024/t01/cg-t01-g02/-/blob/master/project/screenshots/project-t01g02-7.png)
+![Screenshot 7](screenshots/project-t01g02-7.png)
 
-![Screenshot 8](https://git.fe.up.pt/cg/cg-2023-2024/t01/cg-t01-g02/-/blob/master/project/screenshots/project-t01g02-8.png)
+![Screenshot 8](screenshots/project-t01g02-8.png)
 
 
 
