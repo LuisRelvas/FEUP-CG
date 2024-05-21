@@ -93,7 +93,7 @@ export class MyScene extends CGFscene {
 
     this.enableTextures(true);
 
-    this.texture = new CGFtexture(this, "images/plane_texture.jpg");
+    this.texture = new CGFtexture(this, "images/plane_texture_test3.jpg");
     this.appearance = new CGFappearance(this);
     this.appearance.setTexture(this.texture);
     this.appearance.setTextureWrap('REPEAT', 'REPEAT');
@@ -211,7 +211,6 @@ export class MyScene extends CGFscene {
     {
       if(this.bee.transport) 
       {
-        console.log("the value of the this.hivePos is " + this.hivePos);
         this.restartVx = this.bee.vx; 
         this.restartVy = this.bee.vy;
         this.bee.vx = 0;

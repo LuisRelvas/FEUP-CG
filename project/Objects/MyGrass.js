@@ -29,10 +29,11 @@ export class MyGrass extends CGFobject {
         this.shader = new CGFshader(this.scene.gl, "shaders/grass.vert", "shaders/grass.frag");
     }
 
-    update(t) {
+    update(t, angle) {
         this.shader.setUniformsValues({ 
             windFactor: this.scene.windFactor,
-            time : t % 100000
+            time : t % 100000,
+            aRandomFactor : angle 
         });
     }
 

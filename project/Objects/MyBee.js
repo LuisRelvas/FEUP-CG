@@ -93,7 +93,6 @@ export class MyBee extends CGFobject {
                     Math.abs(pos[1] - pollen[1]) >= 0.0001 ||
                     Math.abs(pos[2] - pollen[2]) >= 0.0001
                 );
-                console.log("Handled a pollen"); 
                 let newPollen = new MyPollen(this.scene); 
                 this.pollenHold = newPollen;
         }
@@ -141,12 +140,10 @@ export class MyBee extends CGFobject {
             this.x += (this.targetPos[0] - this.x) * speed;
             this.y += (this.targetPos[1] - this.y) * speed;
             this.z += (this.targetPos[2] - this.z) * speed;
-            console.log("Entered in the targetPos");
 
             // If the bee is close enough to the target position
             if(Math.abs(this.x - this.targetPos[0]) < 0.4 && Math.abs(this.y - this.targetPos[1]) < 0.4 && Math.abs(this.z - this.targetPos[2]) < 0.4) 
             {
-                console.log("entered in the else condition");
                 this.targetPos = null;
                 this.moving = true; 
                 this.transport = false;
@@ -164,9 +161,7 @@ export class MyBee extends CGFobject {
         if(this.moving) 
         {
             this.x += Math.cos(this.orientation) * this.vx;
-            console.log("the value of the this.x is " + this.x);
             this.z += Math.sin(-this.orientation) * this.vx 
-            console.log("the value of the this.z is " + this.z);
         }
         if(this.down && this.animation) 
         {
