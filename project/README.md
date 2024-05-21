@@ -9,7 +9,7 @@
 All the requirements are developed having. For the aditional development I decided to choose the parabolic trajetory of the bee. 
 Here are some screenshots: 
 
-![Screenshot 1](/screenshots/project-t01g02-1.png)
+![Screenshot 1](screenshots/project-t01g02-1.png)
 
 ![Screenshot 2](https://git.fe.up.pt/cg/cg-2023-2024/t01/cg-t01-g02/-/blob/master/project/screenshots/project-t01g02-2.png)
 
