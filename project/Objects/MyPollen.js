@@ -6,6 +6,9 @@ export class MyPollen extends CGFobject{
         super(scene); 
         this.initMaterials();
         this.sphere = new MySphere(this.scene, 32, 16, false, 0.1);
+        this.x = 0; 
+        this.y = 0; 
+        this.z = 0; 
     }
 
     initMaterials() 
@@ -42,4 +45,5 @@ export class MyPollen extends CGFobject{
         this.scene.popMatrix();
         this.scene.popMatrix();
     }
+    
 }

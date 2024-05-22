@@ -7,7 +7,7 @@ import {CGFobject} from '../../lib/CGF.js';
 export class MyBlade extends CGFobject {
 	constructor(scene) {
         super(scene);
-        this.randomScaleX = Math.random() * 2 + 0.2;  
+        this.randomScaleX = Math.random() * 1 + 0.2;  
         this.randomRotation = Math.random() * Math.PI;  
         this.randomTranslation = Math.random() * 5;
         this.triangleNumber = 0;

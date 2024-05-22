@@ -94,7 +94,7 @@ export class MyHive extends CGFobject{
         this.telhadoMaterial.apply();
         this.scene.translate(0,2,1);
         this.scene.rotate(45 * Math.PI / 180 , 1, 0, 0);
-        this.scene.scale(2,1,1.41); 
+        this.scene.scale(2,1,1.42); 
         this.scene.translate(0,0,-0.5);
         this.quad.display();
         this.scene.popMatrix();
@@ -104,7 +104,7 @@ export class MyHive extends CGFobject{
         this.telhadoMaterial.apply();
         this.scene.translate(0,2,-1);
         this.scene.rotate(-45 * Math.PI / 180 , 1, 0, 0);
-        this.scene.scale(2,1,1.41); 
+        this.scene.scale(2,1,1.42); 
         this.scene.translate(0,0,0.5);
         this.quad.display();
         this.scene.popMatrix();

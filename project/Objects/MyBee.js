@@ -35,6 +35,7 @@ export class MyBee extends CGFobject {
         this.up = false; 
         this.slow = false; 
         this.stop = false; 
+        this.fallingDown = false; 
         this.pollenHold = [];
         this.moveToHive = false; 
         this.vx = 0; 
@@ -42,6 +43,7 @@ export class MyBee extends CGFobject {
         this.aX = 0; 
         this.aY = 0; 
         this.displayPollenInHive = 0; 
+        this.dropping = false; 
         this.scene.pushMatrix();  
         this.scene.popMatrix(); 
         this.initMaterials(); 
@@ -155,7 +157,6 @@ export class MyBee extends CGFobject {
                         this.displayPollenInHive += 0.1
                         this.targetPos = null; 
                     }
-                
             }
         }
         if(this.moving) 
@@ -219,7 +220,6 @@ export class MyBee extends CGFobject {
         this.scene.rotate(this.orientation,0,1,0);
         this.display(scaleFactor);
         this.scene.popMatrix();
-        
     }
 
     turn(v) {

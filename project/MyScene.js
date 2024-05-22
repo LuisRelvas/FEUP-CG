@@ -118,6 +118,7 @@ export class MyScene extends CGFscene {
           this.bee.animation = false; 
           this.bee.vy = 0;
           this.bee.vx = 0;
+          this.bee.stop = true;
           this.bee.targetPos = [flowerX, flowerY + 0.5, flowerZ]
           
         }
@@ -201,8 +202,18 @@ export class MyScene extends CGFscene {
           this.restartVx = 0; 
           this.restartVy = 0; 
           this.bee.animation = true; 
+          this.bee.stop = false;
           this.bee.transport = true; 
           this.bee.handle(this.pollenPos[i]);
+        }
+        else if(!this.bee.transport && this.bee.stop)
+        {
+          this.bee.vx = this.restartVx;  
+          this.bee.vy = -this.restartVy;  
+          this.restartVx = 0; 
+          this.restartVy = 0; 
+          this.bee.animation = true; 
+          this.bee.stop = false; 
         }
 
       }         
@@ -252,7 +263,7 @@ export class MyScene extends CGFscene {
 
   initTextures()
   {
-    this.panoramTexture = new CGFtexture(this, "images/panorama4.jpg"); 
+    this.panoramTexture = new CGFtexture(this, "images/panorama_updated_4.jpg"); 
     this.panoram = new MyPanoram(this,this.panoramTexture);
     this.texture = new CGFtexture(this, "images/terrain.jpg");
     this.sphereTexture = new CGFtexture(this, "images/earth.jpg");
@@ -301,6 +312,7 @@ export class MyScene extends CGFscene {
     this.popMatrix();
     }
 
+    if(this.displayRockSet){
     this.pushMatrix(); 
     this.translate(50,-50,-100);
     this.scale(3,3,3); 
@@ -312,6 +324,7 @@ export class MyScene extends CGFscene {
     this.scale(3,3,3); 
     this.rockSet3.display(); 
     this.popMatrix(); 
+    }
 
 
     if(this.displayHive){
