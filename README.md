@@ -3,7 +3,6 @@
 ## Group T01G02
 | Name             | Number    | E-Mail             |
 | ---------------- | --------- | ------------------ |
-| Andre Pinto      | 202108856 | up202108856@up.pt  |
 | Luis Relvas      | 202108661 | up202108661@up.pt  |
 
 ----
